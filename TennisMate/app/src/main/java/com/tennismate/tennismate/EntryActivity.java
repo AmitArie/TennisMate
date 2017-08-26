@@ -1,5 +1,6 @@
 package com.tennismate.tennismate;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class EntryActivity extends AppCompatActivity {
         }
         else{
             Log.e("TAG", String.valueOf(canAccessLocation));
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
 
         }
     }
@@ -48,6 +51,9 @@ public class EntryActivity extends AppCompatActivity {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+
                 } else {
 
                     // permission denied, boo! Disable the
@@ -63,6 +69,10 @@ public class EntryActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+
+
 
                 } else {
 
