@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1020954989527",
+    "firebase_url": "https://tennismate-12a20.firebaseio.com",
+    "project_id": "tennismate-12a20",
+    "storage_bucket": "tennismate-12a20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020954989527:android:af6c877e78bcbc77",
+        "android_client_info": {
+          "package_name": "com.tennismate.tennismate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020954989527-pe0i3bv1ip6t4rji8a1s6ivd0fgifg4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tennismate.tennismate",
+            "certificate_hash": "9e8d371f479e8d1b75e93e8914125528bcef4eb2"
+          }
+        },
+        {
+          "client_id": "1020954989527-q0upuqshlg2iiu32n60hjv10br3p0i0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWC1khkUszK7c1NGeQwXXcHXl1E5zCt78"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020954989527-q0upuqshlg2iiu32n60hjv10br3p0i0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

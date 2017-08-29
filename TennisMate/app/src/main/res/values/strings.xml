@@ -1,3 +1,9 @@
 <resources>
+
+    <string name="facebook_app_id">467201103675952</string>
+    <string name="fb_login_protocol_scheme">fb467201103675952</string>
     <string name="app_name">TennisMate</string>
+    <string name="splash_welcome_text">Welcome to TennisMate!</string>
+    <string name="entry_description">Please login</string>
+    <string name="home_logout">Log Out</string>
 </resources>
