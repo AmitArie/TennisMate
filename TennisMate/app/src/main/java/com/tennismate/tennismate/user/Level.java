@@ -7,6 +7,7 @@ public  final class Level {
     private String _name;
     private String _description;
 
+    public Level(){}
 
     public Level(int number, String name, String description){
         this._number = number;

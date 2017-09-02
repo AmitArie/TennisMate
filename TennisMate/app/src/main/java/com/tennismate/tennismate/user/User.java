@@ -1,20 +1,45 @@
 package com.tennismate.tennismate.user;
 
-import java.util.Date;
+import android.support.annotation.Keep;
 
-enum Gender {
-    MALE, FEMALE
-}
+import java.util.ArrayList;
+import java.util.List;
 
 public class User
 {
 
-    private String username;
-    private String email;
-    private String password; // maybe not needed. FB / GOOGLE AUTH
-    private Date dateOfBirth;
-    private Gender gender;
+    public String uid;
+    public String firstName;
+    public String lastName;
+    public String email;
+    public int rank;
+    public String imageUrl;
+    public double latitude;
+    public double longitude;
+    public List<User> mates;
+
+    @Keep
+    public User(){};
 
 
+    public User(String uid,
+                String firstName,
+                String lastName,
+                String email,
+                int rank,
+                String imageUrl,
+                double latitude,
+                double longitude
+    ) {
+        this.uid = uid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.rank = rank;
+        this.imageUrl = imageUrl;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.mates = new ArrayList<>();
+    }
 
 }
