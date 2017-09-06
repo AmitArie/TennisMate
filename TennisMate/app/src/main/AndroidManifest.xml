@@ -13,18 +13,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+
+
         <activity
-            android:name=".SplashActivity"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen">
+            android:name=".EntryActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
         <activity
-            android:name=".EntryActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+
+
+
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".ProfileActivity"></activity>
+
+
 
         <receiver
             android:name=".location.LocationSharingBroadcastReceiver"
@@ -54,10 +72,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HomeActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".ProfileActivity"></activity>
+
     </application>
 
 </manifest>

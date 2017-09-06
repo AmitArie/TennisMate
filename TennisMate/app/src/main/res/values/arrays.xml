@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_profile_rank_list">
+        <item> @string/activity_profile_rank_1_option </item>
+        <item> @string/activity_profile_rank_2_option </item>
+        <item> @string/activity_profile_rank_3_option </item>
+        <item> @string/activity_profile_rank_4_option </item>
+        <item> @string/activity_profile_rank_5_option </item>
+        <item> @string/activity_profile_rank_6_option </item>
+        <item> @string/activity_profile_rank_7_option </item>
+        <item> @string/activity_profile_rank_8_option </item>
+        <item> @string/activity_profile_rank_9_option </item>
+        <item> @string/activity_profile_rank_10_option</item>
+    </string-array>
+</resources>

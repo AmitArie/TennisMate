@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.tennismate.tennismate.user.UserContext;
 
 import java.util.logging.LogManager;
 

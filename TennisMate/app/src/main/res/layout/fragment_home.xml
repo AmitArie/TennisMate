@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="com.tennismate.tennismate.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/profileButton"

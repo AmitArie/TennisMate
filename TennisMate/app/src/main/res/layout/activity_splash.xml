@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="com.tennismate.tennismate.SplashActivity"
     tools:layout_editor_absoluteY="0dp"
     tools:layout_editor_absoluteX="0dp">
@@ -12,6 +13,11 @@
         android:id="@+id/textView2"
         android:layout_width="267dp"
         android:layout_height="122dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
         android:text="@string/splash_welcome_text"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time"
@@ -19,16 +25,12 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:typeface="monospace"
-        tools:text="@string/splash_welcome_text"
-        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_bias="0.504"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar2" />
+        tools:text="@string/splash_welcome_text" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -36,7 +38,7 @@
         android:layout_width="98dp"
         android:layout_height="104dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"

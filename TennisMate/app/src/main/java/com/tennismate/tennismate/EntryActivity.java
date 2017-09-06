@@ -13,8 +13,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.LoggingBehavior;
+//import com.facebook.FacebookSdk;
+//import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -33,15 +33,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.tennismate.tennismate.location.AccessLocation;
 import com.tennismate.tennismate.user.User;
+import com.tennismate.tennismate.utilities.SaveUserOnDB;
 
 import java.util.Arrays;
+
 
 
 
@@ -58,18 +55,17 @@ public class EntryActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private FirebaseDatabase database;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        if (BuildConfig.DEBUG) {
-            FacebookSdk.setIsDebugEnabled(true);
-            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-        }
+
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        if (BuildConfig.DEBUG) {
+//            FacebookSdk.setIsDebugEnabled(true);
+//            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+//        }
         setContentView(R.layout.activity_entry2);
 
         mAuth =  FirebaseAuth.getInstance();
@@ -78,7 +74,7 @@ public class EntryActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 if(firebaseAuth.getCurrentUser() != null){
-                    startActivity( new Intent(EntryActivity.this, HomeActivity.class));
+                    startActivity( new Intent(EntryActivity.this, SplashActivity.class));
                 }
             }
         };
@@ -94,6 +90,12 @@ public class EntryActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
         //checkLocationPerm();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
     }
 
 
@@ -155,7 +157,9 @@ public class EntryActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
-                            saveUserOnDB(FirebaseAuth.getInstance().getCurrentUser());
+                            String facebookUserId = mAuth.getCurrentUser().getProviderData().get(1).getUid();
+                            String PhotoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
+                            saveUserOnDB(FirebaseAuth.getInstance().getCurrentUser(), PhotoUrl);
 
                         } else {
                             LoginManager.getInstance().logOut();
@@ -214,8 +218,8 @@ public class EntryActivity extends AppCompatActivity {
                         }
                         else{
                             // updating DB:
-                            saveUserOnDB(FirebaseAuth.getInstance().getCurrentUser());
-
+                            String photoUrl = mAuth.getCurrentUser().getProviderData().get(1).getPhotoUrl().toString();
+                            saveUserOnDB(FirebaseAuth.getInstance().getCurrentUser(), photoUrl);
                         }
                     }
                 });
@@ -224,48 +228,19 @@ public class EntryActivity extends AppCompatActivity {
     /*  Google SignIn : end */
 
 
+    private void saveUserOnDB (final FirebaseUser user, final String photoUrl){
 
-    private void saveUserOnDB (final FirebaseUser user){
+        new SaveUserOnDB()
+                .execute(new User(
+                        user.getUid(),
+                        user.getDisplayName(),
+                        user.getEmail(),
+                        "10",
+                        photoUrl,
+                        0.11,
+                        0.11
+                ));
 
-        final String uid = user.getUid();
-        final String email = user.getEmail();
-
-
-        database = FirebaseDatabase.getInstance();
-        final DatabaseReference usersRef = database.getReference();
-        final DatabaseReference Users = usersRef.child("users");
-        DatabaseReference uidQuery =  Users.child(uid);
-
-        uidQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Object serverUser = dataSnapshot.getValue();
-                if( serverUser == null ){
-                    Log.d("User", "first login ever");
-
-                    User TennisMateUser = new User(uid,
-                            "",
-                            "",
-                            email,
-                            0,
-                            "",
-                            0,
-                            0);
-                    Users.setValue(uid);
-                    Users.child(uid).setValue(TennisMateUser);
-                }
-                else{
-                    Log.d("User", "not the first login ever");
-                    
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                Log.d("User", firebaseError.getMessage());
-            }
-        });
     }
 
 
