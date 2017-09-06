@@ -1,20 +1,16 @@
 package com.tennismate.tennismate;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-//import com.facebook.FacebookSdk;
-//import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -33,13 +29,14 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.tennismate.tennismate.location.AccessLocation;
 import com.tennismate.tennismate.user.User;
 import com.tennismate.tennismate.utilities.SaveUserOnDB;
+import com.tennismate.tennismate.utilities.Time;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-
-
+import java.util.Date;
 
 
 public class EntryActivity extends AppCompatActivity {
@@ -60,12 +57,6 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//        if (BuildConfig.DEBUG) {
-//            FacebookSdk.setIsDebugEnabled(true);
-//            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-//        }
         setContentView(R.layout.activity_entry2);
 
         mAuth =  FirebaseAuth.getInstance();
@@ -230,6 +221,7 @@ public class EntryActivity extends AppCompatActivity {
 
     private void saveUserOnDB (final FirebaseUser user, final String photoUrl){
 
+
         new SaveUserOnDB()
                 .execute(new User(
                         user.getUid(),
@@ -238,73 +230,16 @@ public class EntryActivity extends AppCompatActivity {
                         "10",
                         photoUrl,
                         0.11,
-                        0.11
+                        0.11,
+                        "",
+                        "",
+                        "",
+                        Time.getFullTime()
                 ));
 
     }
 
 
 
-    private void checkLocationPerm(){
-        boolean canAccessLocation = AccessLocation.canAccessLocation(this);
 
-        if( ! canAccessLocation){
-            AccessLocation.requestAccess(this);
-        }
-        else{
-            Log.e("TAG", String.valueOf(canAccessLocation));
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-
-            case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-
-
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
 }

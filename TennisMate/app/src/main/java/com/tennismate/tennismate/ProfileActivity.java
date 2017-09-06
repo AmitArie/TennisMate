@@ -16,6 +16,7 @@ import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.user.User;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.utilities.RoundedImageView;
+import com.tennismate.tennismate.utilities.Time;
 
 
 public class ProfileActivity extends AppCompatActivity {
@@ -88,9 +89,12 @@ public class ProfileActivity extends AppCompatActivity {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference usersRef = database.getReference();
                 final DatabaseReference Users = usersRef.child("users");
+
+                mUser.lastUpdatedDate = Time.getFullTime();
                 Users.child(mUser.uid).setValue(mUser);
                 mSaveButton.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();

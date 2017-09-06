@@ -18,12 +18,18 @@ public class User implements  Serializable
     public String photoUrl;
     public Double latitude;
     public Double longitude;
+    public String country;
+    public String district;
+    public String street;
+    public String lastUpdatedDate;
 
     @Keep
     public User(){};
 
     public User(String uid, String fullName, String email,  String level,
-                String photoUrl, Double latitude, Double longitude) {
+                String photoUrl, Double latitude, Double longitude,
+                String country, String district, String street,
+                String lastUpdatedDate) {
 
         this.uid = uid;
         this.firstName = "";
@@ -40,11 +46,18 @@ public class User implements  Serializable
         this.photoUrl = photoUrl;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.country = country;
+        this.district = district;
+        this.street = street;
+        this.lastUpdatedDate = lastUpdatedDate;
+
     }
 
 
     public User(String uid, String firstName, String lastName, String email,
-                String level, String photoUrl, Double latitude, Double longitude) {
+                String level, String photoUrl, Double latitude, Double longitude,
+                String country, String district, String street,
+                String lastUpdatedDate) {
 
         this.uid = uid;
         this.firstName = firstName;
@@ -54,6 +67,10 @@ public class User implements  Serializable
         this.photoUrl = photoUrl;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.country = country;
+        this.district = district;
+        this.street = street;
+        this.lastUpdatedDate = lastUpdatedDate;
     }
 
 

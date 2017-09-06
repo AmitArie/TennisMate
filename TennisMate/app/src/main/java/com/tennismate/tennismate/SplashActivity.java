@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.tennismate.tennismate.user.User;
-import com.tennismate.tennismate.user.UserContext;
+
 import com.tennismate.tennismate.utilities.GetUserFromDB;
 
 

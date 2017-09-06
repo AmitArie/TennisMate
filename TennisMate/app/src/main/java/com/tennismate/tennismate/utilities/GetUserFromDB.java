@@ -35,13 +35,31 @@ public class GetUserFromDB {
                 if( ServerUser != null ){
                     String firstName = (String) ServerUser.get("firstName");
                     String email = (String) ServerUser.get("email");
+                    String level = (String)  ServerUser.get("level");
                     String photoUrl = (String) ServerUser.get("photoUrl");
                     String lastName = (String) ServerUser.get("lastName");
-                    Double latitude = (Double) ServerUser.get("latitude");
-                    Double longitude = (Double) ServerUser.get("longitude");
-                    String level = (String)  ServerUser.get("level");
+                    String country = (String)  ServerUser.get("country");
+                    String district = (String)  ServerUser.get("district");
+                    String street = (String)  ServerUser.get("street");
 
-                    User user = new User(userId, firstName, lastName, email, level, photoUrl, latitude, longitude);
+                    Double latitude = ((Number) ServerUser.get("latitude")).doubleValue();
+                    Double longitude = ((Number) ServerUser.get("longitude")).doubleValue();
+                    String lastUpdatedDate = (String)  ServerUser.get("lastUpdatedDate");
+
+                    User user = new User(
+                            userId,
+                            firstName,
+                            lastName,
+                            email,
+                            level,
+                            photoUrl,
+                            latitude,
+                            longitude,
+                            country,
+                            district,
+                            street,
+                            lastUpdatedDate );
+
                     RunTimeSharedData.userContext = new UserContext(user);
 
                 }

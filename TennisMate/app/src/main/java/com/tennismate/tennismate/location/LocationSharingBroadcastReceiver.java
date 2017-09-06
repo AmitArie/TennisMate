@@ -6,14 +6,13 @@ import android.content.Intent;
 
 public class LocationSharingBroadcastReceiver extends BroadcastReceiver
 {
-    public static final int     REQUEST_CODE = 12345;
-    public static final String  ACTION = "ACTION_SHARE_LOCATION";
+    public static final String  ACTION_SHARE_LOCATION = "ACTION_SHARE_LOCATION";
+    public static final int  REQUEST_CODE = 1;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, LocationSharingIntentService.class);
-        i.putExtra("foo", "bar");
-        i.setAction(ACTION);
+        i.setAction(ACTION_SHARE_LOCATION);
         context.startService(i);
     }
 }
