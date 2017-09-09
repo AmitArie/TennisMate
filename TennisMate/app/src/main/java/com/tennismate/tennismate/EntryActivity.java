@@ -29,14 +29,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.tennismate.tennismate.user.User;
+import com.tennismate.tennismate.user.BaseUser;
+import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.utilities.SaveUserOnDB;
-import com.tennismate.tennismate.utilities.Time;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
+
 
 
 public class EntryActivity extends AppCompatActivity {
@@ -219,27 +217,18 @@ public class EntryActivity extends AppCompatActivity {
     /*  Google SignIn : end */
 
 
-    private void saveUserOnDB (final FirebaseUser user, final String photoUrl){
+    private void saveUserOnDB (final FirebaseUser firebaseUser, final String photoUrl){
 
 
-        new SaveUserOnDB()
-                .execute(new User(
-                        user.getUid(),
-                        user.getDisplayName(),
-                        user.getEmail(),
-                        "10",
-                        photoUrl,
-                        0.11,
-                        0.11,
-                        "",
-                        "",
-                        "",
-                        Time.getFullTime()
-                ));
+        BaseUser baseUser = new BaseUser(
+                firebaseUser.getUid(),
+                firebaseUser.getDisplayName(),
+                firebaseUser.getEmail(),
+                "10",
+                photoUrl);
+
+        SaveUserOnDB.firstTime(new UserContext(baseUser));
 
     }
-
-
-
 
 }

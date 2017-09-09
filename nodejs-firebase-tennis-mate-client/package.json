@@ -1,0 +1,20 @@
+{
+  "name": "tennis-mate-nodejs-client",
+  "version": "1.0.0",
+  "description": "This Project is another client side of TennisMate app, via firebase node sdk. The main objective is to add new fake users to the DB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitarie/tennismate"
+  },
+  "author": "Amit Arie",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^4.3.1",
+    "firebase-tools": "^3.10.0",
+    "geofire": "^4.1.2"
+  }
+}

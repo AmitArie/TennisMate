@@ -71,52 +71,49 @@ public class HomeActivity extends AppCompatActivity {
             AccessLocation.requestAccess(this);
         }
         else{
-
             scheduleAlarm();
-            /*
-                TODO: decide what to do if the user is refusing.
-            */
         }
     }
-
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+
+        final int GRANTED = PackageManager.PERMISSION_GRANTED;
         switch (requestCode) {
 
-            case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if ( ! (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    Log.e("Permissions", "User denied");
-                    /*
+            case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION:
 
-                        TODO: Disable functionality
-                        permission denied, boo! Disable the
-                        functionality that depends on this permission.
-                     */
-
-                }
-            }
-
-            case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if ( ! (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) ) {
-                    Log.e("Permissions", "User denied");
-
-                    /*
-                        TODO: Disable functionality
-                        permission denied, boo! Disable the
-                        functionality that depends on this permission.
-                     */
+                if (grantResults.length > 0 && grantResults[0] == GRANTED){
+                    Log.e("Permissions", "User Approved: ACCESS_COARSE_LOCATION");
+                    scheduleAlarm();
                 }
 
-            }
+                else{
+                    Log.e("Permissions", "User Denied: ACCESS_COARSE_LOCATION");
+                    //TODO: Disable functionality
+
+                }
+                break;
+
+
+            case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+
+                if (grantResults.length > 0 && grantResults[0] == GRANTED){
+                    Log.e("Permissions", "User Approved: ACCESS_FINE_LOCATION");
+                    scheduleAlarm();
+                }
+
+                else{
+                    Log.e("Permissions", "User Denied: ACCESS_FINE_LOCATION");
+                    //TODO: Disable functionality
+                }
+                break;
+
         }
     }
+
 
 
     private void scheduleAlarm(){

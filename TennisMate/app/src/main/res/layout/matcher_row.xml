@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="15dp"
+        android:background="@color/white">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:background="@color/white">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/matcher_row_pict"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:src="@drawable/profile_pict_mock"
+                app:civ_border_width="0dp"
+                app:civ_border_color="#FF000000"/>
+
+
+            <!--<ImageView-->
+
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:src="@drawable/profile_pict_mock"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:scaleType="fitXY"-->
+                <!--android:id="@+id/matcher_row_pict"/>-->
+
+            <TextView
+                android:id="@+id/matcher_row_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="200dp"
+                android:text="Amit Arie"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/matcher_row_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/matcher_row_full_name"
+                android:layout_marginLeft="150dp"
+                android:text="Jerusalem, Beit Hakerem"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

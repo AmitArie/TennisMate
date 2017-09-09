@@ -11,8 +11,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
-import com.tennismate.tennismate.user.User;
+import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
+import com.tennismate.tennismate.user.UserLocation;
 
 import java.util.HashMap;
 
@@ -23,63 +24,83 @@ public class GetUserFromDB {
 
     public GetUserFromDB(FirebaseUser fireBaseUser){
 
-        final String userId = fireBaseUser.getUid();
+        final String uid = fireBaseUser.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseRef = database.getReference("users");
-        DatabaseReference uidQuery =  databaseRef.child(userId);
+
+        DatabaseReference usersRef =     database.getReference("users");
+        DatabaseReference locationMeta = database.getReference("location_meta");
+
+        DatabaseReference uidQuery =            usersRef.child(uid);
+        final DatabaseReference locationMetaQuery =   locationMeta.child(uid);
 
         uidQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap ServerUser = (HashMap) dataSnapshot.getValue();
-                if( ServerUser != null ){
-                    String firstName = (String) ServerUser.get("firstName");
-                    String email = (String) ServerUser.get("email");
-                    String level = (String)  ServerUser.get("level");
-                    String photoUrl = (String) ServerUser.get("photoUrl");
-                    String lastName = (String) ServerUser.get("lastName");
-                    String country = (String)  ServerUser.get("country");
-                    String district = (String)  ServerUser.get("district");
-                    String street = (String)  ServerUser.get("street");
 
-                    Double latitude = ((Number) ServerUser.get("latitude")).doubleValue();
-                    Double longitude = ((Number) ServerUser.get("longitude")).doubleValue();
-                    String lastUpdatedDate = (String)  ServerUser.get("lastUpdatedDate");
+                if ( ServerUser == null)
+                    return;
 
-                    User user = new User(
-                            userId,
-                            firstName,
-                            lastName,
-                            email,
-                            level,
-                            photoUrl,
-                            latitude,
-                            longitude,
-                            country,
-                            district,
-                            street,
-                            lastUpdatedDate );
+                String firstName = (String) ServerUser.get("firstName");
+                String lastName = (String) ServerUser.get("lastName");
+                String email = (String) ServerUser.get("email");
+                String level = (String)  ServerUser.get("level");
+                String photoUrl = (String) ServerUser.get("photoUrl");
 
-                    RunTimeSharedData.userContext = new UserContext(user);
+                final BaseUser baseUser = new BaseUser(
+                        uid,
+                        firstName,
+                        lastName,
+                        email,
+                        level,
+                        photoUrl);
 
-                }
-                else
-                    Log.d("User", "user not found");
+
+                locationMetaQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        HashMap ServerUserLocation = (HashMap) dataSnapshot.getValue();
+
+                        if ( ServerUserLocation == null)
+                            return;
+
+                        String country  =           (String)  ServerUserLocation.get("country");
+                        String district =           (String)  ServerUserLocation.get("district");
+                        String street   =           (String)  ServerUserLocation.get("street");
+                        String lastUpdatedDate =    (String)  ServerUserLocation.get("lastUpdatedDate");
+
+                        double latitude  =   ((Number) ServerUserLocation
+                                .get("latitude")).doubleValue();
+
+                        double longitude =  ((Number) ServerUserLocation
+                                .get("longitude")).doubleValue();
+
+                        UserLocation userLocation = new UserLocation(
+                                latitude,
+                                longitude,
+                                country,
+                                district,
+                                street,
+                                lastUpdatedDate
+                        );
+
+                        RunTimeSharedData.setUserContext(new UserContext(baseUser, userLocation));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {
                 Log.d("User", firebaseError.getMessage());
-                mUserContext = null;
-
             }
         });
 
-
     }
-
-    public UserContext getUserContext(){
-        return mUserContext;
-    }
-
 
 }

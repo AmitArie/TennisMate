@@ -7,17 +7,21 @@ import android.location.Geocoder;
 import android.location.Location;
 
 
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
-import com.tennismate.tennismate.user.User;
+import com.tennismate.tennismate.user.BaseUser;
+import com.tennismate.tennismate.user.UserContext;
+import com.tennismate.tennismate.user.UserLocation;
 import com.tennismate.tennismate.utilities.Time;
 
 import java.io.IOException;
@@ -25,16 +29,13 @@ import java.util.List;
 import java.util.Locale;
 
 
+
 public class LocationSharingIntentService extends IntentService  {
 
     public static final String ACTION_SHARE_LOCATION = "ACTION_SHARE_LOCATION";
-
+    private static String TAG = "L.S.I.S";
     private FusedLocationProviderClient mFusedLocationClient;
-    Geocoder mGeocoder;
-
-
-
-
+    private Geocoder mGeocoder;
 
 
     public LocationSharingIntentService() {
@@ -47,8 +48,6 @@ public class LocationSharingIntentService extends IntentService  {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mGeocoder = new Geocoder(this, Locale.getDefault());
 
-
-
     }
 
     /*
@@ -60,7 +59,7 @@ public class LocationSharingIntentService extends IntentService  {
             final String action = intent.getAction();
 
             if (action.equals(ACTION_SHARE_LOCATION)) {
-                Log.e("L.S.I.S", "Work thread waked up");
+                Log.e(TAG, "Work thread waked up");
                 shareLocation();
             }
         }
@@ -91,48 +90,82 @@ public class LocationSharingIntentService extends IntentService  {
     private void LocationLog(Location location){
 
         if( location != null){
-            Log.e("L.S.I.S", "Got Location:");
-            Log.e("L.S.I.S", "latitude:" + String.valueOf(location.getLatitude()));
-            Log.e("L.S.I.S", "longitude" + String.valueOf(location.getLongitude()));
-            Log.e("L.S.I.S", "accuracy:" + String.valueOf(location.getAccuracy()));
+            Log.e(TAG, "Got Location:");
+            Log.e(TAG, "latitude:" + String.valueOf(location.getLatitude()));
+            Log.e(TAG, "longitude" + String.valueOf(location.getLongitude()));
+            Log.e(TAG, "accuracy:" + String.valueOf(location.getAccuracy()));
 
         }
     }
 
     private void updateUserContext(Location location){
 
-        if( location != null){
 
-            // Getting the user address:
+        UserContext userContext = RunTimeSharedData.getUserContext();
 
-            Address userAddress = getAddress(location);
-
-            // Updating the location of the current user:
-
-            User user = RunTimeSharedData.userContext.getUser();
-            user.longitude = location.getLongitude();
-            user.latitude = location.getLatitude();
-
-            if( userAddress != null )
-            {
-                user.country = userAddress.getCountryName();
-                user.district = userAddress.getLocality();
-                user.street = userAddress.getThoroughfare();
-            }
-
-            user.lastUpdatedDate = Time.getFullTime();
-
-            // Updating Firebase db:
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference usersRef = database.getReference();
-            final DatabaseReference Users = usersRef.child("users");
-            Users.child(user.uid).setValue(user);
+        if( userContext == null){
+            Log.e(TAG, "FATAL ERROR: USER CONTEXT WASN'T INSTANTIATED");
+            return;
         }
+
+        BaseUser baseUser = userContext.getUser();
+        UserLocation userLocation = userContext.getUserLocation();
+
+
+        if( location == null){
+            Log.e(TAG, "ERROR: UPDATE USER CONTEXT: LOCATION IS NULL.");
+            return;
+        }
+
+        // Getting the user address:
+
+        Address userAddress = getAddress(location);
+
+        // Updating the location of the current user:
+
+        userLocation.longitude = location.getLongitude();
+        userLocation.latitude = location.getLatitude();
+
+        if( userAddress != null )
+        {
+            userLocation.country = userAddress.getCountryName();
+            userLocation.district = userAddress.getLocality();
+            userLocation.street = userAddress.getThoroughfare();
+        }
+
+        userLocation.mLastUpdatedDate = Time.getFullTime();
+
+
+
+        // Updating geo_location schema:
+
+        DatabaseReference geoLocationRef = FirebaseDatabase.getInstance().getReference("geo_location");
+        GeoFire geoFire = new GeoFire(geoLocationRef);
+
+        geoFire.setLocation(baseUser.uid , new GeoLocation( userLocation.latitude , userLocation.longitude), new GeoFire.CompletionListener() {
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                if (error != null) {
+                    Log.e(TAG, "There was an error saving the location to GeoFire: " + error);
+                } else {
+                    Log.e(TAG,"Location saved on server successfully!");
+                }
+            }
+        });
+
+        // Updating meta_location:
+
+
+        FirebaseDatabase database;
+        database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference locationMetaRef = database.getReference().child("location_meta");
+        locationMetaRef.child(baseUser.uid).setValue(userLocation);
+
     }
 
     private Address getAddress(Location location){
-        List<Address> addresses = null;
+        List<Address> addresses;
 
         try {
             addresses = mGeocoder.getFromLocation(
@@ -147,10 +180,10 @@ public class LocationSharingIntentService extends IntentService  {
 
         } catch (IOException ioException) {
             // Catch network or other I/O problems.
-            Log.e("L.S.I.S", "IO EXCEPTION", ioException);
+            Log.e(TAG, "IO EXCEPTION", ioException);
         } catch (IllegalArgumentException illegalArgumentException) {
             // Catch invalid latitude or longitude values.
-            Log.e("L.S.I.S", "IO EXCEPTION", illegalArgumentException);
+            Log.e(TAG, "IllegalArgumentException", illegalArgumentException);
         }
 
         return  null;
@@ -159,7 +192,7 @@ public class LocationSharingIntentService extends IntentService  {
     private void handleError(){
         Toast.makeText(getApplicationContext(), "Can't get current location." +
                 " please add the location permissions", Toast.LENGTH_LONG).show();
-        Log.e("L.S.I.S", "Can't get current location.");
+        Log.e(TAG, "Can't get current location.");
     }
 
 }

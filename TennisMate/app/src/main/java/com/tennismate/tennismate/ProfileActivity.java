@@ -13,15 +13,14 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
-import com.tennismate.tennismate.user.User;
+import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.utilities.RoundedImageView;
-import com.tennismate.tennismate.utilities.Time;
 
 
 public class ProfileActivity extends AppCompatActivity {
     private UserContext mUserContext;
-    private User mUser;
+    private BaseUser mUser;
     private RoundedImageView mProfilePictImageView;
     private TextView mFullName;
     private TextView mEmailTextView;
@@ -34,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        mUserContext = RunTimeSharedData.userContext;
+        mUserContext = RunTimeSharedData.getUserContext();
         mUser = mUserContext.getUser();
 
     }
@@ -92,15 +91,12 @@ public class ProfileActivity extends AppCompatActivity {
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference usersRef = database.getReference();
-                final DatabaseReference Users = usersRef.child("users");
+                final DatabaseReference users = usersRef.child("users");
 
-                mUser.lastUpdatedDate = Time.getFullTime();
-                Users.child(mUser.uid).setValue(mUser);
+                users.child(mUser.uid).setValue(mUser);
                 mSaveButton.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-
             }
         });
-
     }
 }

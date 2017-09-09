@@ -4,5 +4,14 @@ import com.tennismate.tennismate.user.UserContext;
 
 public class RunTimeSharedData {
 
-    public static UserContext userContext;
+    private static UserContext smUserContext;
+
+
+    public static void  setUserContext( UserContext userContext){
+        smUserContext = userContext;
+    }
+
+    public static UserContext getUserContext(){
+        return smUserContext;
+    }
 }
