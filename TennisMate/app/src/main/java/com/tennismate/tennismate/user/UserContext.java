@@ -1,8 +1,11 @@
 package com.tennismate.tennismate.user;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.tennismate.tennismate.utilities.ImageDownloader;
+import com.tennismate.tennismate.utilities.RecyclerAdapter;
 import com.tennismate.tennismate.utilities.Time;
 
 import java.io.Serializable;
@@ -15,6 +18,7 @@ public class UserContext implements Serializable{
     private UserLocation        mUserLocation;
     private Bitmap              mUserPhoto;
     private List<BaseUser>      mMates;
+    private RecyclerAdapter mAdapter;
 
 
 
@@ -28,10 +32,26 @@ public class UserContext implements Serializable{
 
     }
 
+    public UserContext(BaseUser user, UserLocation userLocation,
+                       RecyclerAdapter mAdapter){
+
+        this.mUser = user;
+        this.mUserLocation = userLocation;
+        this.mMates = null;
+
+
+        new ImageDownloader(this, mAdapter)
+                .execute(user.photoUrl);
+
+    }
+
+
+
     public UserContext(BaseUser user){
         this.mUser = user;
         this.mUserLocation = new UserLocation();
         this.mMates = null;
+
 
         new ImageDownloader(this)
                 .execute(user.photoUrl);

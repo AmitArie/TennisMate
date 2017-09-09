@@ -41,6 +41,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.2.0'
     compile 'com.google.firebase:firebase-database:11.2.0'
     compile 'com.firebase:geofire-android:2.1.1'
+    compile 'com.github.stfalcon:chatkit:0.2.2'
     compile 'com.google.android.gms:play-services-auth:11.2.0'
     compile 'com.google.android.gms:play-services-location:11.2.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
@@ -48,6 +49,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

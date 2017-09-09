@@ -36,6 +36,9 @@ public class GetUserFromDB {
         uidQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // TODO: use the bridge package
+
                 HashMap ServerUser = (HashMap) dataSnapshot.getValue();
 
                 if ( ServerUser == null)
@@ -60,6 +63,7 @@ public class GetUserFromDB {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
+                        // TODO: use the bridge package
                         HashMap ServerUserLocation = (HashMap) dataSnapshot.getValue();
 
                         if ( ServerUserLocation == null)

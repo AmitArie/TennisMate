@@ -1,5 +1,6 @@
 package com.tennismate.tennismate.utilities;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
+
         ImageView mUserPict;
         TextView  mUserName;
         TextView  muserLocation;
@@ -63,5 +65,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             muserLocation = (TextView) v.findViewById(R.id.matcher_row_location);
 
         }
+    }
+
+
+    public void setFilter(ArrayList<UserContext> newList){
+        mUserContextArrayList = new ArrayList<>();
+        mUserContextArrayList.addAll(newList);
+        notifyDataSetChanged();
     }
 }

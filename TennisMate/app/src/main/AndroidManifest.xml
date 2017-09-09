@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".HomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -58,7 +58,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".FindMateActivity"></activity>
+        <activity android:name=".FindMateActivity" />
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>

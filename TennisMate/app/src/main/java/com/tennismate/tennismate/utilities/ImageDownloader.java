@@ -16,11 +16,19 @@ import java.io.InputStream;
  */
 
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap>{
+
     private UserContext userContext;
+    private RecyclerAdapter mAdapter; // optional. had to do it ugly.
 
     public ImageDownloader(UserContext userContext){
         this.userContext = userContext;
     }
+
+    public ImageDownloader(UserContext userContext, RecyclerAdapter adapter){
+        this.userContext = userContext;
+        this.mAdapter = adapter;
+    }
+
     @Override
     protected Bitmap doInBackground(String... urls) {
         String urldisplay = urls[0];
@@ -37,7 +45,10 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap>{
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+
         this.userContext.setUserPhoto(bitmap);
+        if( mAdapter != null)
+            mAdapter.notifyDataSetChanged();
     }
 
 }
