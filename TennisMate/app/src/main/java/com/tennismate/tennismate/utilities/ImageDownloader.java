@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 
+import com.tennismate.tennismate.MateMatcher.RecyclerAdapter;
 import com.tennismate.tennismate.user.UserContext;
 
 import java.io.InputStream;

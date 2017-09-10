@@ -80,6 +80,9 @@ public class ChatMessage implements IMessage,
         }
     }
 
+    /* For future coding:
+
+
     public static class Voice {
 
         private String url;
@@ -98,4 +101,6 @@ public class ChatMessage implements IMessage,
             return duration;
         }
     }
+
+    */
 }

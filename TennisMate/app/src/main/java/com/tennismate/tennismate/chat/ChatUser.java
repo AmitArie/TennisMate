@@ -35,4 +35,5 @@ public class ChatUser implements IUser {
     public boolean isOnline() {
         return online;
     }
+
 }

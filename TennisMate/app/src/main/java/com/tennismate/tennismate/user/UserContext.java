@@ -1,12 +1,9 @@
 package com.tennismate.tennismate.user;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.tennismate.tennismate.utilities.ImageDownloader;
-import com.tennismate.tennismate.utilities.RecyclerAdapter;
-import com.tennismate.tennismate.utilities.Time;
+import com.tennismate.tennismate.MateMatcher.RecyclerAdapter;
 
 import java.io.Serializable;
 import java.util.List;

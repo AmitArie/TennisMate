@@ -1,9 +1,9 @@
 
 module.exports = class BasicUser {
 
-    constructor (userId, firstName, lastName, email, level, photoUrl) {
+    constructor (uid, firstName, lastName, email, level, photoUrl) {
 
-        this.userId = userId;
+        this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

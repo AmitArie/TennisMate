@@ -1,5 +1,6 @@
 package com.tennismate.tennismate;
 
+import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,16 +8,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
+import com.tennismate.tennismate.MateMatcher.CustomItemClickListener;
 import com.tennismate.tennismate.MateMatcher.MatchingFilter;
 import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
+import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
+import com.tennismate.tennismate.utilities.ChatIdGenerator;
 import com.tennismate.tennismate.utilities.GetUsersByFilterFromDB;
-import com.tennismate.tennismate.utilities.RecyclerAdapter;
+import com.tennismate.tennismate.MateMatcher.RecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -53,7 +57,28 @@ public class FindMateActivity extends AppCompatActivity implements SearchView.On
 
         // Updating the view with the results:
 
-        adapter = new RecyclerAdapter(mSearchResultUsersKeys);
+        adapter = new RecyclerAdapter(mSearchResultUsersKeys, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                UserContext activeUserContext = RunTimeSharedData.getUserContext();
+                UserContext userContext  = mSearchResultUsersKeys.get(position);
+
+                BaseUser activeUser = activeUserContext.getUser();
+                BaseUser user = userContext.getUser();
+
+                String uid = user.uid;
+                String activeUserId = activeUser.uid;
+
+                String chatId = ChatIdGenerator.generate(activeUserId, uid);
+//                new FirebaseChatInitializer(chatId)
+//                        .initialize();
+
+                Intent intent = new Intent(FindMateActivity.this, ChatActivity.class);
+                intent.putExtra("chatId",chatId);
+                startActivity(intent);
+            }
+        });
 
         recyclerView.setAdapter(adapter);
 

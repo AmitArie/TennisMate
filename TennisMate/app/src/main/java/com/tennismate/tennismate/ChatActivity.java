@@ -1,8 +1,10 @@
 package com.tennismate.tennismate;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,9 @@ import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
+import com.tennismate.tennismate.bridge.FromChatToDB;
+import com.tennismate.tennismate.bridge.FromDBtoChat;
 import com.tennismate.tennismate.chat.AppUtils;
 import com.tennismate.tennismate.chat.ChatMessage;
 import com.tennismate.tennismate.chat.MessagesFixtures;
@@ -21,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class ChatActivity extends AppCompatActivity
         implements
@@ -29,7 +35,9 @@ public class ChatActivity extends AppCompatActivity
             MessageInput.AttachmentsListener
 {
 
+    private static final String TAG = "ChatActivity";
     private static final int TOTAL_MESSAGES_COUNT = 100;
+
 
     protected final String senderId = "0";
     protected ImageLoader imageLoader;
@@ -38,14 +46,21 @@ public class ChatActivity extends AppCompatActivity
     private Menu menu;
     private int selectionCount;
     private Date lastLoadedDate;
-
+    private String chatId; // loaded via Intent.
     private MessagesList messagesList;
+    private FromChatToDB fromChatToDB;
+    private FromDBtoChat fromDBtoChat;
+
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        chatIdSetup();
+
 
         imageLoader = new ImageLoader() {
             @Override
@@ -59,14 +74,31 @@ public class ChatActivity extends AppCompatActivity
         this.messagesList = (MessagesList) findViewById(R.id.messagesList);
         initAdapter();
 
+        this.fromChatToDB = new FromChatToDB(chatId, RunTimeSharedData.getUserContext());
+        this.fromDBtoChat = new FromDBtoChat(chatId, getApplicationContext(), messagesAdapter);
+
         MessageInput input = (MessageInput) findViewById(R.id.input);
         input.setInputListener(this);
+
+        fromDBtoChat.loadAllMessages(chatId);
+        fromDBtoChat.realTimeMessageListener();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        messagesAdapter.addToStart(MessagesFixtures.getTextMessage(), true);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "Chat Activity Restart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "Chat Activity Stopped");
     }
 
     @Override
@@ -103,7 +135,7 @@ public class ChatActivity extends AppCompatActivity
     @Override
     public void onLoadMore(int page, int totalItemsCount) {
         if (totalItemsCount < TOTAL_MESSAGES_COUNT) {
-            loadMessages();
+            //loadMessages();
         }
     }
 
@@ -117,14 +149,14 @@ public class ChatActivity extends AppCompatActivity
 
     // This function should connect to firebase.
     protected void loadMessages() {
-        new Handler().postDelayed(new Runnable() { //imitation of internet connection
-            @Override
-            public void run() {
-                ArrayList<ChatMessage> chatMessages = MessagesFixtures.getMessages(lastLoadedDate);
-                lastLoadedDate = chatMessages.get(chatMessages.size() - 1).getCreatedAt();
-                messagesAdapter.addToEnd(chatMessages, false);
-            }
-        }, 1000);
+//        new Handler().postDelayed(new Runnable() { //imitation of internet connection
+//            @Override
+//            public void run() {
+//                ArrayList<ChatMessage> chatMessages = MessagesFixtures.getMessages(lastLoadedDate);
+//                lastLoadedDate = chatMessages.get(chatMessages.size() - 1).getCreatedAt();
+//                messagesAdapter.addToEnd(chatMessages, false);
+//            }
+//        }, 1000);
     }
 
     private MessagesListAdapter.Formatter<ChatMessage> getMessageStringFormatter() {
@@ -150,8 +182,7 @@ public class ChatActivity extends AppCompatActivity
      * @return
      */
     public boolean onSubmit(CharSequence input) {
-        messagesAdapter.addToStart(
-                MessagesFixtures.getTextMessage(input.toString()), true);
+        messagesAdapter.addToStart(fromChatToDB.writeMessage(input), true);
         return true;
     }
 
@@ -174,5 +205,26 @@ public class ChatActivity extends AppCompatActivity
                     }
                 });
         this.messagesList.setAdapter(messagesAdapter);
+    }
+
+    /* Integration Methods */ //TODO: DELETE THIS COMMENT LATER.
+
+    private void chatIdSetup(){
+        Intent intent = getIntent();
+
+        if( intent == null){
+            Log.e(TAG, "Got null Intent");
+            return;
+        }
+
+
+        Bundle b = intent.getExtras();
+
+        if(b == null){
+            Log.e(TAG, "Got good intent, but without any chadId");
+            return;
+        }
+
+        this.chatId = b.getString("chatId");
     }
 }

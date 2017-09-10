@@ -1,6 +1,5 @@
 package com.tennismate.tennismate.utilities;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.firebase.geofire.GeoFire;
@@ -11,16 +10,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tennismate.tennismate.MateMatcher.MatchingFilter;
+import com.tennismate.tennismate.MateMatcher.RecyclerAdapter;
 import com.tennismate.tennismate.bridge.BasicUserFromDataSnapShot;
 import com.tennismate.tennismate.bridge.UserLocationFromDataSnapShot;
 import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.user.UserLocation;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
