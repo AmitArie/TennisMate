@@ -101,7 +101,7 @@ public class GetUserFromDB {
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {
-                Log.d("User", firebaseError.getMessage());
+                Log.d("ChatUser", firebaseError.getMessage());
             }
         });
 

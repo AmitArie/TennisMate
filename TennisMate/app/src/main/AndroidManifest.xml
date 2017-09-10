@@ -58,8 +58,16 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".FindMateActivity" />
-        <activity android:name=".ChatActivity"></activity>
+
+        <activity
+            android:name=".FindMateActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+
+        <activity
+                android:name=".ChatActivity"
+                android:theme="@style/Theme.AppCompat">
+        </activity>
     </application>
 
 </manifest>

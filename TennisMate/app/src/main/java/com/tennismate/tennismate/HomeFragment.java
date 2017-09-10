@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment {
     private Button mSearchMatesButton;
     private SeekBar mRadiusSeekBar;
     private TextView mRadiusSeekBarText;
+    private Button mChatButton;
 
     public HomeFragment() {}
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
         searchMatesSetup(v);
         profileSetup(v);
         logoutSetup(v);
+        chatButtonSetup(v);
 
         return v;
     }
@@ -169,5 +171,16 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    private void chatButtonSetup(View v){
+        mChatButton = (Button) v.findViewById(R.id.chat_activity_button);
+        mChatButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
+
 

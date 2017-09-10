@@ -35,6 +35,17 @@
     <string name="activity_profile_rank_9_option">9</string>
     <string name="activity_profile_rank_10_option">10</string>
 
+    <!-- Chat -->
+
+    <string name="activity_chat_hint_enter_a_message">Type a chatMessage…</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_delete">Delete</string>
+    <string name="copied_message">Message copied!</string>
+
+
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
