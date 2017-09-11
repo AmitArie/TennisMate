@@ -11,6 +11,7 @@ import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.chat.ChatMessage;
 import com.tennismate.tennismate.chat.DBMessage;
+import com.tennismate.tennismate.user.UserContext;
 
 public class FromDBtoChat extends BaseChatDB {
     private static final String TAG = "FromDBtoChat";
@@ -18,14 +19,16 @@ public class FromDBtoChat extends BaseChatDB {
     private Context context;
     private DatabaseReference mUsersRef;
     private MessagesListAdapter<ChatMessage> mMessageMessagesListAdapter;
+    final private UserContext mUserContext;
     final String mActiveUserUid;
+    private ValueEventListener realTimeMessagingListener;
 
     public FromDBtoChat(String chatId, Context context,  MessagesListAdapter<ChatMessage> messageMessagesListAdapter){
         super(chatId);
         this.context = context;
-        this.mUsersRef = this.mDatabase.getReference("users");
+        this.mUserContext = RunTimeSharedData.getUserContext();
         this.mMessageMessagesListAdapter = messageMessagesListAdapter;
-        mActiveUserUid =  RunTimeSharedData.getUserContext().getUser().uid;
+        this.mActiveUserUid =  mUserContext.getUser().uid;
     }
 
     public void loadAllMessages(String chatId){
@@ -65,7 +68,7 @@ public class FromDBtoChat extends BaseChatDB {
      */
     public void realTimeMessageListener(){
 
-        this.mLastMessages.child(chatId).addValueEventListener(new ValueEventListener() {
+        realTimeMessagingListener = this.mLastMessages.child(chatId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -84,6 +87,16 @@ public class FromDBtoChat extends BaseChatDB {
                         .fromDbMessageRefTOChatMessage(lastMessage);
                 mMessageMessagesListAdapter.addToStart(chatMessage, true);
 
+                /*
+                    setting the unseen messages of the current user in the
+                    current chat to zero:
+
+                 */
+
+                if ( RunTimeSharedData.isChatActivityAtive )
+                    resetUnreadMessages();
+
+
             }
 
             @Override
@@ -93,6 +106,11 @@ public class FromDBtoChat extends BaseChatDB {
         });
 
 
+    }
+
+    private void resetUnreadMessages(){
+        mChatUnseenMessages.child(chatId).child(mActiveUserUid).setValue(0);
+        mUserContext.eraseUnreadMessageCount(chatId);
     }
 
 

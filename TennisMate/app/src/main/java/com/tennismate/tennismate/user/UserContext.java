@@ -116,10 +116,7 @@ public class UserContext{
                so it is fine.
          */
         int oldPos = mDialogs.indexOf(replacement);
-        // getting the  unread message count:
-        int unReadMessagesCount = mDialogs.get(oldPos).getUnreadCount();
         mDialogs.remove(oldPos);
-        replacement.setUnreadCount(unReadMessagesCount + 1);
         mDialogs.add(replacement); // for persistence (on Memory)
 
         if( this.mDialogsAdapter != null){
@@ -130,5 +127,20 @@ public class UserContext{
 
     public void setDialogAdapter(DialogsListAdapter<Dialog>  dialogsAdapter){
         this.mDialogsAdapter = dialogsAdapter;
+    }
+
+    public void eraseUnreadMessageCount(String chatId){
+
+        for ( Dialog d : mDialogs){
+            if( d.getId().equals(chatId) ){
+
+                d.setUnreadCount(0);
+
+                if(this.mDialogsAdapter != null)
+                    this.mDialogsAdapter.notifyDataSetChanged();
+
+                break;
+            }
+        }
     }
 }

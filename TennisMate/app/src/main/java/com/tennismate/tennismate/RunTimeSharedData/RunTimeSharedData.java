@@ -6,6 +6,7 @@ import com.tennismate.tennismate.user.UserContext;
 public class RunTimeSharedData {
 
     private static UserContext smUserContext;
+    public static boolean isChatActivityAtive = false;
 
 
 

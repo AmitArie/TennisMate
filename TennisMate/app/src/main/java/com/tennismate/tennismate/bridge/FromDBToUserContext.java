@@ -31,6 +31,7 @@ public class FromDBToUserContext {
     private DatabaseReference mUsersRef;
     private DatabaseReference mLocationMetaRef;
     private DatabaseReference mLastMessagesRef;
+    protected DatabaseReference mChatUnseenMessages;
     private UserContext mUserContext;
     private String mUid;
 
@@ -44,6 +45,7 @@ public class FromDBToUserContext {
         mUsersRef = database.getReference("users");
         mLocationMetaRef = database.getReference("location_meta");
         mLastMessagesRef = database.getReference("chat").child("lastMessages");
+        mChatUnseenMessages = database.getReference("chat").child("unseenMessages");
 
         mUserContext = userContext;
         mUserContext.setDialogs(new ArrayList<Dialog>());
@@ -104,10 +106,11 @@ public class FromDBToUserContext {
         mLastMessagesRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                 if (dataSnapshot == null)
                     return;
 
-                if (dataSnapshot == null)
+                if (dataSnapshot.getKey() == null)
                     return;
 
                 final String chatId = dataSnapshot.getKey();
@@ -122,22 +125,50 @@ public class FromDBToUserContext {
                 // fetching information about the other user:
                 String otherUid = ChatIdGenerator.extractOtherId(chatId, mUid);
                 mUsersRef.child(otherUid).addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot == null)
                             return;
-                        BaseUser baseUser = dataSnapshot.getValue(BaseUser.class);
+                        final BaseUser baseUser = dataSnapshot.getValue(BaseUser.class);
 
-                        ArrayList<ChatUser> users = new ArrayList<>();
+                        final ArrayList<ChatUser> users = new ArrayList<>();
                         users.add(lastMessage.getUser());
-                        mUserContext.addDialog(new Dialog(
-                                chatId,
-                                baseUser.firstName + " " + baseUser.lastName,
-                                baseUser.photoUrl,
-                                users,
-                                lastMessage,
-                                1
-                        ));
+
+                        // Getting count of unseenMessages:
+
+                        final DatabaseReference r =
+                                mChatUnseenMessages.child(chatId).child(mUid);
+
+                        r.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot == null || dataSnapshot.getKey() == null)
+                                    return;
+
+                                long unreadMessagesCount;
+
+                                if( dataSnapshot.getValue() == null)
+                                     unreadMessagesCount = 0;
+                                else
+                                    unreadMessagesCount = (long) dataSnapshot.getValue();
+
+                                mUserContext.addDialog(new Dialog(
+                                        chatId,
+                                        baseUser.firstName + " " + baseUser.lastName,
+                                        baseUser.photoUrl,
+                                        users,
+                                        lastMessage,
+                                        (int) unreadMessagesCount
+                                ));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
 
                     @Override
@@ -174,25 +205,52 @@ public class FromDBToUserContext {
                         if (dataSnapshot == null)
                             return;
 
-                        BaseUser baseUser = dataSnapshot.getValue(BaseUser.class);
+                        final BaseUser baseUser = dataSnapshot.getValue(BaseUser.class);
 
 
 
-                        ArrayList<ChatUser> users = new ArrayList<>();
+                        final ArrayList<ChatUser> users = new ArrayList<>();
                         users.add(lastMessage.getUser());
 
-                        // Updating UserContext by the new Dialog
 
-                        mUserContext.updateDialog(new Dialog(
-                                chatId,
-                                baseUser.firstName + " " + baseUser.lastName,
-                                baseUser.photoUrl,
-                                users,
-                                lastMessage,
-                                1
-                        ));
+                        // Getting count of unseenMessages:
 
-                        Log.d(TAG, " Updated - Dialog.");
+                        final DatabaseReference r =
+                                mChatUnseenMessages.child(chatId).child(mUid);
+
+                        r.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(dataSnapshot == null || dataSnapshot.getKey() == null)
+                                    return;
+
+                                long unreadMessagesCount;
+
+                                if( dataSnapshot.getValue() == null)
+                                    unreadMessagesCount = 0;
+                                else
+                                    unreadMessagesCount = (long) dataSnapshot.getValue(); // Updating UserContext by the new Dialog
+
+                                mUserContext.updateDialog(new Dialog(
+                                        chatId,
+                                        baseUser.firstName + " " + baseUser.lastName,
+                                        baseUser.photoUrl,
+                                        users,
+                                        lastMessage,
+                                        (int) unreadMessagesCount
+                                ));
+
+                                Log.d(TAG, " Updated - Dialog.");
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                     }
 
                     @Override

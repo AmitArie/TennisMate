@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        RunTimeSharedData.isChatActivityAtive = true;
 
         chatIdSetup();
 
@@ -77,6 +77,7 @@ public class ChatActivity extends AppCompatActivity
         this.fromChatToDB = new FromChatToDB(chatId, RunTimeSharedData.getUserContext());
         this.fromDBtoChat = new FromDBtoChat(chatId, getApplicationContext(), messagesAdapter);
 
+
         MessageInput input = (MessageInput) findViewById(R.id.input);
         input.setInputListener(this);
 
@@ -87,18 +88,33 @@ public class ChatActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+        RunTimeSharedData.isChatActivityAtive = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RunTimeSharedData.isChatActivityAtive = true;
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        RunTimeSharedData.isChatActivityAtive = true;
         Log.d(TAG, "Chat Activity Restart");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        RunTimeSharedData.isChatActivityAtive = false;
         Log.d(TAG, "Chat Activity Stopped");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RunTimeSharedData.isChatActivityAtive = false;
     }
 
     @Override
@@ -224,7 +240,7 @@ public class ChatActivity extends AppCompatActivity
             Log.e(TAG, "Got good intent, but without any chadId");
             return;
         }
-
         this.chatId = b.getString("chatId");
+
     }
 }

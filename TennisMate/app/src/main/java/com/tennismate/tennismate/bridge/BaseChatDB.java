@@ -9,7 +9,7 @@ public abstract class BaseChatDB {
     protected String chatId;
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mLastMessages;
-    //protected DatabaseReference mMembersRef;
+    protected DatabaseReference mChatUnseenMessages;
     protected DatabaseReference mMessagesRef;
 
     protected BaseChatDB(String chatId){
@@ -17,7 +17,7 @@ public abstract class BaseChatDB {
         this.chatId = chatId;
         this.mDatabase = FirebaseDatabase.getInstance();
         this.mLastMessages = mDatabase.getReference("chat").child("lastMessages");
-        //this.mMembersRef = mDatabase.getReference("chat").child("members");
+        this.mChatUnseenMessages = mDatabase.getReference("chat").child("unseenMessages");
         this.mMessagesRef = mDatabase.getReference("chat").child("messages");
     }
 }
