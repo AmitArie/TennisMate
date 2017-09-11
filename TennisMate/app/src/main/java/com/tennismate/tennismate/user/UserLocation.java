@@ -3,7 +3,9 @@ package com.tennismate.tennismate.user;
 
 import com.tennismate.tennismate.utilities.Time;
 
-public class UserLocation {
+import java.io.Serializable;
+
+public class UserLocation implements Serializable{
 
     public double latitude;
     public double longitude;

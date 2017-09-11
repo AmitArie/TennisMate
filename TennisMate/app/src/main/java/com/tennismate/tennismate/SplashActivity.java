@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.utilities.GetUserFromDB;
 
 
 public class SplashActivity extends AppCompatActivity {
     private static int SPLASH_TIME = 3500;
-    private GetUserFromDB mGetUserFromDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
-        mGetUserFromDB = new GetUserFromDB(FirebaseAuth.getInstance().getCurrentUser());
+        RunTimeSharedData.fetchUserData();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

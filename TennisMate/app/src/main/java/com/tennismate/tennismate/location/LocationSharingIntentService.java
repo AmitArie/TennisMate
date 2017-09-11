@@ -103,7 +103,7 @@ public class LocationSharingIntentService extends IntentService  {
 
         UserContext userContext = RunTimeSharedData.getUserContext();
 
-        if( userContext == null){
+        if( userContext.getUser() == null || userContext.getUserLocation() == null){
             Log.e(TAG, "FATAL ERROR: USER CONTEXT WASN'T INSTANTIATED");
             return;
         }

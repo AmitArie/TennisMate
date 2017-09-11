@@ -18,6 +18,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tennismate.tennismate.MateMatcher.MatchingFilter;
 import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
+import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.user.UserLocation;
 
 
@@ -26,7 +27,6 @@ import com.tennismate.tennismate.user.UserLocation;
  */
 public class HomeFragment extends Fragment {
 
-    private FloatingActionButton profileButton;
     private Button mLogout;
     private FirebaseAuth mAuth;
     private Button mSearchMatesButton;
@@ -41,12 +41,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         searchMatesSetup(v);
-        profileSetup(v);
-        logoutSetup(v);
-        chatButtonSetup(v);
+        //profileSetup(v);
+        //logoutSetup(v);
+        //chatButtonSetup(v);
 
         return v;
     }
@@ -146,41 +147,41 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void profileSetup(View v){
-
-        profileButton = (FloatingActionButton) v.findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void logoutSetup(View v){
-
-        mLogout = (Button) v.findViewById(R.id.logout);
-        mLogout.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                LoginManager.getInstance().logOut();
-                mAuth =  FirebaseAuth.getInstance();
-                mAuth.signOut();
-                Intent intent = new Intent(getActivity(), EntryActivity.class);
-                startActivity(intent);
-
-            }
-        });
-    }
-
-    private void chatButtonSetup(View v){
-        mChatButton = (Button) v.findViewById(R.id.chat_activity_button);
-        mChatButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    private void profileSetup(View v){
+//
+//        profileButton = (FloatingActionButton) v.findViewById(R.id.profileButton);
+//        profileButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
+//
+//    private void logoutSetup(View v){
+//
+//        mLogout = (Button) v.findViewById(R.id.logout);
+//        mLogout.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                LoginManager.getInstance().logOut();
+//                mAuth =  FirebaseAuth.getInstance();
+//                mAuth.signOut();
+//                Intent intent = new Intent(getActivity(), EntryActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
+//    }
+//
+//    private void chatButtonSetup(View v){
+//        mChatButton = (Button) v.findViewById(R.id.chat_activity_button);
+//        mChatButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 }
 
 

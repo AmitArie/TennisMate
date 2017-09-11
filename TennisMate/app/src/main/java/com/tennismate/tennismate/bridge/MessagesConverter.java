@@ -37,7 +37,8 @@ public class MessagesConverter {
         ChatUser chatUser = new ChatUser(
                 color,
                 DBMessage.name,
-                DBMessage.urlPict,true);
+                DBMessage.urlPict,
+                true);
 
         return new ChatMessage(
                     Long.toString(DBMessage.timestamp),

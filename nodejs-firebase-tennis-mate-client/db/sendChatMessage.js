@@ -7,9 +7,9 @@ let app = firebase.initializeApp(firebaseConf);
 let database = firebase.database();
 
 let messageTime = new Date().getTime();
-let chatId = "aJsoLUT5ogVsLCWXMsKFXma8Sas6----aJsoLUT5ogVsLCWXMsKFXma8Sas6";
+let chatId = "aJsoLUT5ogVsLCWXMsKFXma8Sas6----6OEy2YVstVTApGOx0fcpCvCi2A32";
 let message = {
-    "message":"Fine!",
+    "message":"Great!?",
     "name":"Nir",
     "timestamp":messageTime,
     "uid":"aJsoLUT5ogVsLCWXMsKFXma8Sas6",
