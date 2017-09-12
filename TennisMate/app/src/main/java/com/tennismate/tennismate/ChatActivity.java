@@ -10,6 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
@@ -21,6 +27,7 @@ import com.tennismate.tennismate.bridge.FromDBtoChat;
 import com.tennismate.tennismate.chat.AppUtils;
 import com.tennismate.tennismate.chat.ChatMessage;
 import com.tennismate.tennismate.chat.MessagesFixtures;
+import com.tennismate.tennismate.user.BaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,13 +46,14 @@ public class ChatActivity extends AppCompatActivity
     private static final int TOTAL_MESSAGES_COUNT = 100;
 
 
+    private DatabaseReference mUsersRef;
+    private String mActiveUserId;
     protected final String senderId = "0";
     protected ImageLoader imageLoader;
     protected MessagesListAdapter<ChatMessage> messagesAdapter;
 
     private Menu menu;
     private int selectionCount;
-    private Date lastLoadedDate;
     private String chatId; // loaded via Intent.
     private MessagesList messagesList;
     private FromChatToDB fromChatToDB;
@@ -58,6 +66,9 @@ public class ChatActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RunTimeSharedData.isChatActivityAtive = true;
+
+        mUsersRef = FirebaseDatabase.getInstance().getReference("users");
+        mActiveUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         chatIdSetup();
 
@@ -74,15 +85,33 @@ public class ChatActivity extends AppCompatActivity
         this.messagesList = (MessagesList) findViewById(R.id.messagesList);
         initAdapter();
 
-        this.fromChatToDB = new FromChatToDB(chatId, RunTimeSharedData.getUserContext());
-        this.fromDBtoChat = new FromDBtoChat(chatId, getApplicationContext(), messagesAdapter);
-
 
         MessageInput input = (MessageInput) findViewById(R.id.input);
         input.setInputListener(this);
 
-        fromDBtoChat.loadAllMessages(chatId);
-        fromDBtoChat.realTimeMessageListener();
+        this.mUsersRef.child(mActiveUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getKey() == null)
+                    return;
+
+                BaseUser baseUser = dataSnapshot.getValue(BaseUser.class);
+
+                fromDBtoChat = new FromDBtoChat(chatId, messagesAdapter);
+                fromChatToDB = new FromChatToDB(chatId, baseUser);
+
+                fromDBtoChat.loadAllMessages(chatId);
+                fromDBtoChat.realTimeMessageListener();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
+
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -14,25 +14,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tennismate.tennismate.MateMatcher.MatchingFilter;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
-import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.user.UserLocation;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
 
-    private Button mLogout;
-    private FirebaseAuth mAuth;
-    private Button mSearchMatesButton;
-    private SeekBar mRadiusSeekBar;
-    private TextView mRadiusSeekBarText;
-    private Button mChatButton;
+
+    private Button              mSearchMatesButton;
+    private SeekBar             mRadiusSeekBar;
+    private TextView            mRadiusSeekBarText;
+    private String              mActiveUserUid;
+    private DatabaseReference   mUserLocationRef;
 
     public HomeFragment() {}
 
@@ -42,7 +44,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
+        this.mActiveUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.mUserLocationRef = FirebaseDatabase.getInstance().getReference("location_meta");
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         searchMatesSetup(v);
         //profileSetup(v);
@@ -96,14 +101,31 @@ public class HomeFragment extends Fragment {
 
     private void searchMates(){
 
-        UserLocation userLocation = RunTimeSharedData.getUserContext().getUserLocation();
-        int radius = mRadiusSeekBar.getProgress();
+
+        mUserLocationRef.child(mActiveUserUid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if( dataSnapshot == null || dataSnapshot.getKey() == null)
+                            return;
+
+                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
+                        int radius = mRadiusSeekBar.getProgress();
 
 
-        MatchingFilter matchingFilter = createFilter(radius, userLocation);
-        Intent intent = new Intent(getActivity(), FindMateActivity.class);
-        intent.putExtra("MatchingFilter", matchingFilter);
-        startActivity(intent);
+                        MatchingFilter matchingFilter = createFilter(radius, userLocation);
+                        Intent intent = new Intent(getActivity(), FindMateActivity.class);
+                        intent.putExtra("MatchingFilter", matchingFilter);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
     }
 

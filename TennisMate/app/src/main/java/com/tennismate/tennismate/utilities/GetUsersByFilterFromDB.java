@@ -39,10 +39,7 @@ public class GetUsersByFilterFromDB {
     private GeoFire geoFire;
     private ArrayList<String> mGeoFireUids;
     private ArrayList<UserContext> mResult;
-    
-    private double currentUserLatitude;
-    private double currentUserLongitude;
-    private double mRadius;
+    private MatchingFilter mMatchingFilter;
 
 
 
@@ -59,10 +56,8 @@ public class GetUsersByFilterFromDB {
         this.geoFire = new GeoFire(mGeoLocationRef);
         this.mGeoFireUids = new ArrayList<>();
         this.mResult = result;
+        this.mMatchingFilter = filter;
 
-        this.currentUserLatitude = filter.getLatitude();
-        this.currentUserLongitude = filter.getLongitude();
-        this.mRadius = filter.getRadius();
 
     }
 
@@ -73,8 +68,8 @@ public class GetUsersByFilterFromDB {
 
         final GeoQuery geoQuery = geoFire
                 .queryAtLocation(new GeoLocation(
-                        this.currentUserLatitude,
-                        this.currentUserLongitude), mRadius);
+                        mMatchingFilter.latitude,
+                        mMatchingFilter.longitude), mMatchingFilter.radius);
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override

@@ -11,11 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.tennismate.tennismate.MateMatcher.CustomItemClickListener;
 import com.tennismate.tennismate.MateMatcher.MatchingFilter;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.utilities.ChatIdGenerator;
@@ -28,11 +27,11 @@ public class FindMateActivity extends AppCompatActivity implements SearchView.On
 
     private static final String TAG = "FindMateActivity";
     private Toolbar mToolbar;
-    RecyclerView recyclerView;
-    RecyclerAdapter adapter;
-    RecyclerView.LayoutManager  layoutManager;
-
-    ArrayList<UserContext> mSearchResultUsersKeys;
+    private RecyclerView recyclerView;
+    private RecyclerAdapter adapter;
+    private RecyclerView.LayoutManager  layoutManager;
+    private ArrayList<UserContext> mSearchResultUsersKeys;
+    private String mActiveUserId;
 
 
     @Override
@@ -40,6 +39,7 @@ public class FindMateActivity extends AppCompatActivity implements SearchView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_mate);
 
+        this.mActiveUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.mSearchResultUsersKeys = new ArrayList<>();
 
         MatchingFilter matchingFilter = (MatchingFilter) getIntent().getSerializableExtra("MatchingFilter");
@@ -61,18 +61,12 @@ public class FindMateActivity extends AppCompatActivity implements SearchView.On
             @Override
             public void onItemClick(View v, int position) {
 
-                UserContext activeUserContext = RunTimeSharedData.getUserContext();
                 UserContext userContext  = mSearchResultUsersKeys.get(position);
-
-                BaseUser activeUser = activeUserContext.getUser();
                 BaseUser user = userContext.getUser();
 
-                String uid = user.uid;
-                String activeUserId = activeUser.uid;
+                String OtherUid = user.uid;
 
-                String chatId = ChatIdGenerator.generate(activeUserId, uid);
-//                new FirebaseChatInitializer(chatId)
-//                        .initialize();
+                String chatId = ChatIdGenerator.generate(mActiveUserId, OtherUid);
 
                 Intent intent = new Intent(FindMateActivity.this, ChatActivity.class);
                 intent.putExtra("chatId",chatId);

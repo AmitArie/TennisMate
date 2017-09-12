@@ -98,12 +98,7 @@ public class UserContext{
     }
 
 
-    public void addDialog(Dialog d){
-        if( mDialogs != null)
-            this.mDialogs.add(d);               // for persistence (on Memory)
-        if( this.mDialogsAdapter != null)
-            this.mDialogsAdapter.addItem(d);    // for real time.
-    }
+
 
     public void updateDialog(Dialog replacement){
 

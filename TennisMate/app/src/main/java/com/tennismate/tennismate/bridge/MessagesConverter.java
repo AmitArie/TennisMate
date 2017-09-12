@@ -1,6 +1,6 @@
 package com.tennismate.tennismate.bridge;
 
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
+import com.google.firebase.auth.FirebaseAuth;
 import com.tennismate.tennismate.chat.ChatMessage;
 import com.tennismate.tennismate.chat.ChatUser;
 import com.tennismate.tennismate.chat.DBMessage;
@@ -12,8 +12,7 @@ public class MessagesConverter {
 
     private static final String STROKE_COLOR_BLUE =  "0";
     private static final String STROKE_COLOR_WHITE = "1";
-    private static final String mActiveUserUid = RunTimeSharedData
-            .getUserContext().getUser().uid;
+    private static final String mActiveUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public static DBMessage fromChatToDbMessageRef(ChatMessage chatMessage){
 

@@ -15,12 +15,11 @@ import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
-import com.tennismate.tennismate.user.BaseUser;
-import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.user.UserLocation;
 import com.tennismate.tennismate.utilities.Time;
 
@@ -100,22 +99,29 @@ public class LocationSharingIntentService extends IntentService  {
 
     private void updateUserContext(Location location){
 
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-        UserContext userContext = RunTimeSharedData.getUserContext();
-
-        if( userContext.getUser() == null || userContext.getUserLocation() == null){
-            Log.e(TAG, "FATAL ERROR: USER CONTEXT WASN'T INSTANTIATED");
+        if( firebaseAuth == null){
+            Log.e(TAG, "LocationSharing Intent Service: line 108. FirebaseAuth is null.");
             return;
         }
 
-        BaseUser baseUser = userContext.getUser();
-        UserLocation userLocation = userContext.getUserLocation();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-
-        if( location == null){
-            Log.e(TAG, "ERROR: UPDATE USER CONTEXT: LOCATION IS NULL.");
+        if( firebaseUser == null){
+            Log.e(TAG, "LocationSharing Intent Service: line 115. firebaseUser is null.");
             return;
         }
+
+        String uid = firebaseUser.getUid();
+
+        if ( uid == null){
+            Log.e(TAG, "LocationSharing Intent Service: line 122. uid is null.");
+            return;
+        }
+
+        UserLocation userLocation = new UserLocation();
+
 
         // Getting the user address:
 
@@ -142,7 +148,7 @@ public class LocationSharingIntentService extends IntentService  {
         DatabaseReference geoLocationRef = FirebaseDatabase.getInstance().getReference("geo_location");
         GeoFire geoFire = new GeoFire(geoLocationRef);
 
-        geoFire.setLocation(baseUser.uid , new GeoLocation( userLocation.latitude , userLocation.longitude), new GeoFire.CompletionListener() {
+        geoFire.setLocation(uid , new GeoLocation( userLocation.latitude , userLocation.longitude), new GeoFire.CompletionListener() {
             @Override
             public void onComplete(String key, DatabaseError error) {
                 if (error != null) {
@@ -160,7 +166,7 @@ public class LocationSharingIntentService extends IntentService  {
         database = FirebaseDatabase.getInstance();
 
         final DatabaseReference locationMetaRef = database.getReference().child("location_meta");
-        locationMetaRef.child(baseUser.uid).setValue(userLocation);
+        locationMetaRef.child(uid).setValue(userLocation);
 
     }
 

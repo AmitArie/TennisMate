@@ -1,34 +1,31 @@
 package com.tennismate.tennismate.bridge;
 
-import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.chat.ChatMessage;
 import com.tennismate.tennismate.chat.DBMessage;
-import com.tennismate.tennismate.user.UserContext;
 
-public class FromDBtoChat extends BaseChatDB {
+public class FromDBtoChat extends BaseDB {
     private static final String TAG = "FromDBtoChat";
 
-    private Context context;
-    private DatabaseReference mUsersRef;
     private MessagesListAdapter<ChatMessage> mMessageMessagesListAdapter;
-    final private UserContext mUserContext;
-    final String mActiveUserUid;
-    private ValueEventListener realTimeMessagingListener;
+//    private DialogsListAdapter<Dialog> mDialogsAdapter;
+    private final String mActiveUserUid;
+    private final String mChatId;
 
-    public FromDBtoChat(String chatId, Context context,  MessagesListAdapter<ChatMessage> messageMessagesListAdapter){
-        super(chatId);
-        this.context = context;
-        this.mUserContext = RunTimeSharedData.getUserContext();
+    public FromDBtoChat(String chatId,
+                        MessagesListAdapter<ChatMessage> messageMessagesListAdapter
+                        ){
+        super();
+        this.mChatId = chatId;
         this.mMessageMessagesListAdapter = messageMessagesListAdapter;
-        this.mActiveUserUid =  mUserContext.getUser().uid;
+//        this.mDialogsAdapter = dialogsAdapter;
+        this.mActiveUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public void loadAllMessages(String chatId){
@@ -68,7 +65,7 @@ public class FromDBtoChat extends BaseChatDB {
      */
     public void realTimeMessageListener(){
 
-        realTimeMessagingListener = this.mLastMessages.child(chatId).addValueEventListener(new ValueEventListener() {
+        this.mLastMessagesRef.child(mChatId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -93,8 +90,10 @@ public class FromDBtoChat extends BaseChatDB {
 
                  */
 
-                if ( RunTimeSharedData.isChatActivityAtive )
-                    resetUnreadMessages();
+
+//                if( mDialogsAdapter != null){
+//                    mChatUnseenMessages.child(chatId).child(mActiveUserUid).setValue(0);
+//                }
 
 
             }
@@ -108,10 +107,10 @@ public class FromDBtoChat extends BaseChatDB {
 
     }
 
-    private void resetUnreadMessages(){
-        mChatUnseenMessages.child(chatId).child(mActiveUserUid).setValue(0);
-        mUserContext.eraseUnreadMessageCount(chatId);
-    }
+//    private void resetUnreadMessages(){
+//        mChatUnseenMessages.child(chatId).child(mActiveUserUid).setValue(0);
+//        mUserContext.eraseUnreadMessageCount(chatId);
+//    }
 
 
 }

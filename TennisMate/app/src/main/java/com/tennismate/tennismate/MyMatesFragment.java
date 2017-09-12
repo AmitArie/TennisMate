@@ -8,37 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
+import com.tennismate.tennismate.bridge.FromDBtoDialogs;
 import com.tennismate.tennismate.mates.Dialog;
-import com.tennismate.tennismate.mates.DialogsFixtures;
-import com.tennismate.tennismate.user.UserContext;
+
 
 
 public class MyMatesFragment extends Fragment implements DialogsListAdapter.OnDialogClickListener<Dialog>,
         DialogsListAdapter.OnDialogLongClickListener<Dialog> {
 
-    protected ImageLoader imageLoader;
-    protected DialogsListAdapter<Dialog> dialogsAdapter;
+    private ImageLoader imageLoader;
+    private DialogsListAdapter<Dialog> dialogsAdapter;
     private DialogsList dialogsList;
-    private UserContext mUserContext;
+    private FromDBtoDialogs fromDBtoDialogs;
 
 
-    public MyMatesFragment() {
-        // Required empty public constructor
-    }
+    public MyMatesFragment() {}
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mUserContext = RunTimeSharedData.getUserContext();
         View view = inflater.inflate(R.layout.fragment_my_mates, container, false);
 
         imageLoader = new ImageLoader() {
@@ -47,9 +41,10 @@ public class MyMatesFragment extends Fragment implements DialogsListAdapter.OnDi
                 Picasso.with(getActivity()).load(url).into(imageView);
             }
         };
-        mUserContext = RunTimeSharedData.getUserContext();
         dialogsList = (DialogsList) view.findViewById(R.id.dialogsList);
         initAdapter();
+        fromDBtoDialogs = new FromDBtoDialogs(dialogsAdapter);
+
 
 
         return view;
@@ -59,12 +54,10 @@ public class MyMatesFragment extends Fragment implements DialogsListAdapter.OnDi
     private void initAdapter() {
 
         dialogsAdapter = new DialogsListAdapter<>(imageLoader);
-        mUserContext.setDialogAdapter(dialogsAdapter);
-        dialogsAdapter.setItems(mUserContext.getDialog());
+        // maybe here we need to set the list of dialogs to the adaptors.
         dialogsAdapter.setOnDialogClickListener(this);
         dialogsAdapter.setOnDialogLongClickListener(this);
         dialogsList.setAdapter(dialogsAdapter);
-
 
     }
 

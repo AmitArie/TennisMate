@@ -10,7 +10,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.user.UserLocation;
@@ -48,7 +47,6 @@ public class SaveUserOnDB {
                     locationMeta.child(baseUser.uid).setValue(userLocation);
                     geoFire.setLocation(baseUser.uid, new GeoLocation(userLocation.latitude, userLocation.longitude));
 
-                    RunTimeSharedData.setUserContext(userContext);
 
                 }
             }
@@ -64,36 +62,3 @@ public class SaveUserOnDB {
 
 }
 
-
-
-/*
-
-if(AccessToken.getCurrentAccessToken()!=null) {
-
-    System.out.println(AccessToken.getCurrentAccessToken().getToken());
-
-    GraphRequest request = GraphRequest.newMeRequest(
-            AccessToken.getCurrentAccessToken(),
-            new GraphRequest.GraphJSONObjectCallback() {
-                @Override
-                public void onCompleted(JSONObject object, GraphResponse response) {
-                    // Application code
-                    try {
-                        String email = object.getString("email");
-                        String gender = object.getString("gender");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-    Bundle parameters = new Bundle();
-    parameters.putString("fields", "id,name,email,gender,birthday");
-    request.setParameters(parameters);
-    request.executeAsync();
-
-}
-else
-{
-    System.out.println("Access Token NULL");
-}
- */

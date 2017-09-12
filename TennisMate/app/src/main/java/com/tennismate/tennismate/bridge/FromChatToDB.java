@@ -13,24 +13,24 @@ import com.tennismate.tennismate.utilities.ChatIdGenerator;
 
 import java.util.Date;
 
-public final class FromChatToDB extends BaseChatDB
+public final class FromChatToDB extends BaseDB
 {
 
     private static final String STROKE_COLOR_BLUE =  "0";
 
-    private UserContext userContext;
-    private BaseUser baseUser;
+    private String mChatId;
+    private BaseUser mBaseUser;
     private ChatUser chatUser;
 
-    public FromChatToDB(String chatId, UserContext userContext) {
-        super(chatId);
+    public FromChatToDB(String chatId, BaseUser baseUser) {
+        super();
 
-        this.userContext = userContext;
-        this.baseUser = this.userContext.getUser();
+        this.mChatId = chatId;
+        this.mBaseUser = baseUser;
         this.chatUser = new ChatUser(
                 STROKE_COLOR_BLUE,
-                this.baseUser.firstName,
-                this.baseUser.photoUrl,
+                this.mBaseUser.firstName,
+                this.mBaseUser.photoUrl,
                 true);
     }
 
@@ -47,10 +47,10 @@ public final class FromChatToDB extends BaseChatDB
 
         DBMessage DBMessage = MessagesConverter.fromChatToDbMessageRef(chatMessage);
 
-        this.mMessagesRef.child(chatId).child(chatMessage.getId())
+        this.mMessagesRef.child(mChatId).child(chatMessage.getId())
                 .setValue(DBMessage); // appending the chat messages:
 
-        this.mLastMessages.child(chatId).setValue(DBMessage); // Saving in last message
+        this.mLastMessagesRef.child(mChatId).setValue(DBMessage); // Saving in last message
         appendUnseenMessages();
 
         return chatMessage;
@@ -60,8 +60,8 @@ public final class FromChatToDB extends BaseChatDB
     public void appendUnseenMessages(){
 
 
-        final String otherUserUid = ChatIdGenerator.extractOtherId(chatId, baseUser.uid);
-        final DatabaseReference r = this.mChatUnseenMessages.child(chatId).child(otherUserUid);
+        final String otherUserUid = ChatIdGenerator.extractOtherId(mChatId, mBaseUser.uid);
+        final DatabaseReference r = this.mUnseenMessagesRef.child(mChatId).child(otherUserUid);
         r.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

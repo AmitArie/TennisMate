@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tennismate.tennismate.R;
-import com.tennismate.tennismate.RunTimeSharedData.RunTimeSharedData;
 import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.user.UserLocation;

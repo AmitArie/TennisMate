@@ -6,9 +6,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class MatchingFilter implements Serializable {
 
-    private int radius;
-    private double latitude;
-    private double longitude;
+    public  int radius;
+    public  double latitude;
+    public  double longitude;
     //TODO: add more fields
 
 
@@ -18,16 +18,4 @@ public class MatchingFilter implements Serializable {
         this.longitude = longitude;
     }
 
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
 }

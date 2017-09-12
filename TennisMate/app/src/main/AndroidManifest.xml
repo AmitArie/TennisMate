@@ -25,9 +25,12 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <activity
             android:name=".HomeActivity"
             android:theme="@style/Theme.AppCompat.Light" />
+
+
         <activity android:name=".ProfileActivity" />
 
         <receiver
