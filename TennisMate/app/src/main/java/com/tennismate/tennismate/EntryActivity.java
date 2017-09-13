@@ -29,6 +29,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.tennismate.tennismate.bridge.FromUserContextToDB;
 import com.tennismate.tennismate.user.BaseUser;
 import com.tennismate.tennismate.user.UserContext;
 import com.tennismate.tennismate.utilities.SaveUserOnDB;
@@ -227,7 +229,9 @@ public class EntryActivity extends AppCompatActivity {
                 "10",
                 photoUrl);
 
-        SaveUserOnDB.firstTime(new UserContext(baseUser));
+        new FromUserContextToDB(new UserContext(baseUser))
+                .execute();
+        //SaveUserOnDB.firstTime(new UserContext(baseUser));
 
     }
 

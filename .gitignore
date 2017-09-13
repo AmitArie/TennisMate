@@ -1,2 +1,6 @@
 TennisMate/.idea/*
 nodejs-firebase-tennis-mate-client/node_modules/
+functions/node_modules/*
+functions/functions/node_modules/*
+functions/.idea/*
+nodejs-firebase-tennis-mate-client/.idea/*

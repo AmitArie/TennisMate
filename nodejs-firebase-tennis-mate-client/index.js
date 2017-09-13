@@ -10,74 +10,30 @@ let app = firebase.initializeApp(firebaseConf);
 let database = firebase.database();
 
 
-fs.readdir(__dirname + "/db/jsons", (err, dir) => {
-    if(err)
-        throw err;
+let lastMessageRef = database.ref("chat").child("lastMessages");
 
-    let finishFlag = dir.length;
+lastMessageRef.on("child_added", (req)=>{
 
-    dir.forEach( (file) => {
+    if( ! req)
+        return;
 
-        let fullPath = __dirname + "/db/jsons/" + file;
-        console.log("Working on: " + fullPath);
+    let key = req.getKey();
+    let value = req.value();
+    console.log(value);
 
-        bridge.userContextFromJson(fullPath)
-            .then( (userContext) => {
-
-                addUsers.addUserContext(database, userContext)
-                    .then( (res) => {
-                        console.log(res);
-                        finishFlag = finishFlag - 1;
-
-                        if(  finishFlag == 0  )
-                            app.delete();
-                    })
-                    .catch( (err) => {
-                        finishFlag = finishFlag - 1;
-
-                        if(  finishFlag == 0  )
-                            app.delete();
-                    });
-            })
-            .catch( (err) => {
-                console.log(err);
-            });
-
-    });
 });
 
 
 
 
+lastMessageRef.on("child_changed", (req) =>{
 
-// let app = firebase.initializeApp(firebaseConf);
-//
-// let database = firebase.database();
-// let geoLocationRef = database.ref("/geo_location");
+    if( ! req)
+        return;
 
-
-// let geoFire = new GeoFire(geoLocationRef);
-//
-//
-// geoFire.get("ZxQECJWAmhOmQ2QqBMJXhdfhSFU2").then(function(location) {
-//     if (location === null) {
-//         console.log("Provided key is not in GeoFire");
-//     }
-//     else {
-//         console.log("Provided key has a location of " + location);
-//     }
-//     app.delete();
-// }, function(error) {
-//     console.log("Error: " + error);
-//     app.delete();
-// });
+    let key = req.getKey();
+    let value = req.value();
+    console.log(value);
+});
 
 
-// let geoLocationRef = database.ref("/geo_location").once("value")
-//     .then( (snapshot) => {
-//         console.log(snapshot.val());
-//         app.delete();
-//     })
-//     .catch( (e) => {
-//         throw e;
-//     });
