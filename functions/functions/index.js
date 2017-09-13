@@ -27,8 +27,10 @@ function sendNotification ( event ){
 
     let payload = {
         notification: {
-            title: lastMessageObj.name,
-            body: lastMessageObj.message
+            title: lastMessageObj.name + "",
+            body: lastMessageObj.message,
+            icon: 'ic_notification_tennis',
+            sound: "default"
         }
     };
 
