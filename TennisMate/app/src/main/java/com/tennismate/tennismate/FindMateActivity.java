@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class FindMateActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private static final String TAG = "FindMateActivity";
+
     private Toolbar mToolbar;
     private RecyclerView recyclerView;
     private RecyclerAdapter adapter;

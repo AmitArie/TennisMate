@@ -1,9 +1,13 @@
 package com.tennismate.tennismate.user;
 import com.tennismate.tennismate.user.Level.*;
 
+import java.util.ArrayList;
+
 public class LevelFactory
 {
-    public Level createLevel(int level){
+    private static final int NUMBER_OF_LEVELS = 10;
+
+    private static Level createLevel(int level){
 
         Level l;
         switch (level){
@@ -74,5 +78,15 @@ public class LevelFactory
                 l =  null;
         }
         return l;
+    }
+
+    public static ArrayList<Level> getLevels(){
+
+        ArrayList<Level> levels = new ArrayList<>();
+
+        for ( int i = NUMBER_OF_LEVELS; i >= 1; i--)
+            levels.add(createLevel(i));
+
+        return levels;
     }
 }

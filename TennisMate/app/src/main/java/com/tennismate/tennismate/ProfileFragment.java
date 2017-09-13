@@ -1,6 +1,7 @@
 package com.tennismate.tennismate;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ public class ProfileFragment extends Fragment {
     private TextView mEmailTextView;
     private Spinner mLevel;
     private int mLevelCounter;
+    private ImageView mLevelInfo;
     private Button mSaveButton;
 
     // DTypes:
@@ -99,6 +102,15 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
+            }
+        });
+
+        mLevelInfo = (ImageView) v.findViewById(R.id.level_information);
+        mLevelInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getActivity(), LevelInfoActivity.class);
+                startActivity(in);
             }
         });
 

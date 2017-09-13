@@ -120,6 +120,13 @@
             android:layout_marginEnd="8dp"
             android:entries="@array/activity_profile_rank_list" />
 
+        <ImageView
+            android:id="@+id/level_information"
+            android:clickable="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_level_information"/>
+
     </LinearLayout>
 
     <RelativeLayout
