@@ -21,7 +21,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_home">HomeActivity</string>
 
-    <!-- Profile Activity -->
+    <!-- Profile Fragment -->
     <string name="activity_profile_description">Here you can edit your details</string>
     <string name="activity_profile_rank_label">Rank:</string>
     <string name="activity_profile_rank_1_option">1</string>
@@ -35,12 +35,18 @@
     <string name="activity_profile_rank_9_option">9</string>
     <string name="activity_profile_rank_10_option">10</string>
 
+    <string name="profile_email_label"><b>Email:</b></string>
+    <string name="profile_age_label"><b>Age:</b></string>
+    <string name="profile_level_label"><b>Level:</b></string>
+
+
     <!-- Chat -->
 
     <string name="activity_chat_hint_enter_a_message">Type a chatMessage…</string>
     <string name="action_copy">Copy</string>
     <string name="action_delete">Delete</string>
     <string name="copied_message">Message copied!</string>
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

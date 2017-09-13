@@ -72,6 +72,9 @@ public class LocationSharingIntentService extends IntentService  {
                         @Override
                         public void onSuccess(Location location) {
 
+                            if( location == null)
+                                return;
+
                             LocationLog(location);
                             updateUserContext(location);
 
