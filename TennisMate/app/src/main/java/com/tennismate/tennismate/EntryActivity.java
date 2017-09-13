@@ -123,13 +123,14 @@ public class EntryActivity extends AppCompatActivity {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+         //       Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
+
+             //   Log.d(TAG, "facebook:onCancel");
             }
 
             @Override
@@ -147,14 +148,14 @@ public class EntryActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
+                      //      Log.d(TAG, "signInWithCredential:success");
                             String facebookUserId = mAuth.getCurrentUser().getProviderData().get(1).getUid();
                             String PhotoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
                             saveUserOnDB(FirebaseAuth.getInstance().getCurrentUser(), PhotoUrl);
 
                         } else {
                             LoginManager.getInstance().logOut();
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                      //      Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(EntryActivity.this, "Email address is associated with different provider. ",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -205,7 +206,7 @@ public class EntryActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if ( ! task.isSuccessful() ) {
-                            Log.d(TAG, "signInWithCredential:failed");
+                    //        Log.d(TAG, "signInWithCredential:failed");
                         }
                         else{
                             // updating DB:

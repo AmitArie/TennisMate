@@ -58,7 +58,7 @@ public class LocationSharingIntentService extends IntentService  {
             final String action = intent.getAction();
 
             if (action.equals(ACTION_SHARE_LOCATION)) {
-                Log.e(TAG, "Work thread waked up");
+        //        Log.e(TAG, "Work thread waked up");
                 shareLocation();
             }
         }
@@ -92,10 +92,10 @@ public class LocationSharingIntentService extends IntentService  {
     private void LocationLog(Location location){
 
         if( location != null){
-            Log.e(TAG, "Got Location:");
-            Log.e(TAG, "latitude:" + String.valueOf(location.getLatitude()));
-            Log.e(TAG, "longitude" + String.valueOf(location.getLongitude()));
-            Log.e(TAG, "accuracy:" + String.valueOf(location.getAccuracy()));
+       //     Log.e(TAG, "Got Location:");
+       //     Log.e(TAG, "latitude:" + String.valueOf(location.getLatitude()));
+      //      Log.e(TAG, "longitude" + String.valueOf(location.getLongitude()));
+      //      Log.e(TAG, "accuracy:" + String.valueOf(location.getAccuracy()));
 
         }
     }
@@ -105,21 +105,21 @@ public class LocationSharingIntentService extends IntentService  {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         if( firebaseAuth == null){
-            Log.e(TAG, "LocationSharing Intent Service: line 108. FirebaseAuth is null.");
+      //      Log.e(TAG, "LocationSharing Intent Service: line 108. FirebaseAuth is null.");
             return;
         }
 
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         if( firebaseUser == null){
-            Log.e(TAG, "LocationSharing Intent Service: line 115. firebaseUser is null.");
+       //     Log.e(TAG, "LocationSharing Intent Service: line 115. firebaseUser is null.");
             return;
         }
 
         String uid = firebaseUser.getUid();
 
         if ( uid == null){
-            Log.e(TAG, "LocationSharing Intent Service: line 122. uid is null.");
+       //     Log.e(TAG, "LocationSharing Intent Service: line 122. uid is null.");
             return;
         }
 
@@ -155,9 +155,9 @@ public class LocationSharingIntentService extends IntentService  {
             @Override
             public void onComplete(String key, DatabaseError error) {
                 if (error != null) {
-                    Log.e(TAG, "There was an error saving the location to GeoFire: " + error);
+         //           Log.e(TAG, "There was an error saving the location to GeoFire: " + error);
                 } else {
-                    Log.e(TAG,"Location saved on server successfully!");
+         //           Log.e(TAG,"Location saved on server successfully!");
                 }
             }
         });
@@ -189,10 +189,10 @@ public class LocationSharingIntentService extends IntentService  {
 
         } catch (IOException ioException) {
             // Catch network or other I/O problems.
-            Log.e(TAG, "IO EXCEPTION", ioException);
+     //       Log.e(TAG, "IO EXCEPTION", ioException);
         } catch (IllegalArgumentException illegalArgumentException) {
             // Catch invalid latitude or longitude values.
-            Log.e(TAG, "IllegalArgumentException", illegalArgumentException);
+     //       Log.e(TAG, "IllegalArgumentException", illegalArgumentException);
         }
 
         return  null;
@@ -201,7 +201,7 @@ public class LocationSharingIntentService extends IntentService  {
     private void handleError(){
         Toast.makeText(getApplicationContext(), "Can't get current location." +
                 " please add the location permissions", Toast.LENGTH_LONG).show();
-        Log.e(TAG, "Can't get current location.");
+    //    Log.e(TAG, "Can't get current location.");
     }
 
 }

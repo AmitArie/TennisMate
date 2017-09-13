@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
         boolean canAccessLocation = AccessLocation.canAccessLocation(this);
 
         if( ! canAccessLocation){
-            Log.i("Permissions", "Requesting Permissions");
+            // Log.i("Permissions", "Requesting Permissions");
             AccessLocation.requestAccess(this);
         }
         else{
@@ -115,12 +115,12 @@ public class HomeActivity extends AppCompatActivity {
             case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION:
 
                 if (grantResults.length > 0 && grantResults[0] == GRANTED){
-                    Log.e("Permissions", "ChatUser Approved: ACCESS_COARSE_LOCATION");
+               //     Log.e("Permissions", "ChatUser Approved: ACCESS_COARSE_LOCATION");
                     scheduleAlarm();
                 }
 
                 else{
-                    Log.e("Permissions", "ChatUser Denied: ACCESS_COARSE_LOCATION");
+          //          Log.e("Permissions", "ChatUser Denied: ACCESS_COARSE_LOCATION");
                     //TODO: Disable functionality
 
                 }
@@ -130,12 +130,12 @@ public class HomeActivity extends AppCompatActivity {
             case AccessLocation.MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
 
                 if (grantResults.length > 0 && grantResults[0] == GRANTED){
-                    Log.e("Permissions", "ChatUser Approved: ACCESS_FINE_LOCATION");
+       //             Log.e("Permissions", "ChatUser Approved: ACCESS_FINE_LOCATION");
                     scheduleAlarm();
                 }
 
                 else{
-                    Log.e("Permissions", "ChatUser Denied: ACCESS_FINE_LOCATION");
+       //             Log.e("Permissions", "ChatUser Denied: ACCESS_FINE_LOCATION");
                     //TODO: Disable functionality
                 }
                 break;

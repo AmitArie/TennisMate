@@ -46,7 +46,6 @@ public class FindMateActivity extends AppCompatActivity implements SearchView.On
         MatchingFilter matchingFilter = (MatchingFilter) getIntent().getSerializableExtra("MatchingFilter");
 
 
-//        Log.e(TAG, "Size of result: " + mSearchResultUsersKeys.size() );
 
         mToolbar = (Toolbar) findViewById(R.id.find_mate_toolbar);
         setSupportActionBar(mToolbar);

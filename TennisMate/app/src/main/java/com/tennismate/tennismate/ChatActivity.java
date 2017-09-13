@@ -264,7 +264,7 @@ public class ChatActivity extends AppCompatActivity
         Intent intent = getIntent();
 
         if( intent == null){
-            Log.e(TAG, "Got null Intent");
+        //    Log.e(TAG, "Got null Intent");
             return;
         }
 
@@ -272,7 +272,7 @@ public class ChatActivity extends AppCompatActivity
         Bundle b = intent.getExtras();
 
         if(b == null){
-            Log.e(TAG, "Got good intent, but without any chadId");
+      //      Log.e(TAG, "Got good intent, but without any chadId");
             return;
         }
         this.chatId = b.getString("chatId");

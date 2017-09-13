@@ -53,7 +53,7 @@ public class SaveUserOnDB {
 
             @Override
             public void onCancelled(DatabaseError firebaseError) {
-                Log.d(TAG, firebaseError.getMessage());
+                //Log.d(TAG, firebaseError.getMessage());
             }
         });
 

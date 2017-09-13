@@ -75,7 +75,7 @@ public class GetUsersByFilterFromDB {
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                Log.e(TAG, "onKeyEntered key:" + key + " location" + location.toString() );
+         //       Log.e(TAG, "onKeyEntered key:" + key + " location" + location.toString() );
                 mGeoFireUids.add(key);
             }
 
@@ -86,7 +86,7 @@ public class GetUsersByFilterFromDB {
 
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
-                Log.e(TAG, "onKeyMoved key:" + key + " location" + location.toString() );
+          //      Log.e(TAG, "onKeyMoved key:" + key + " location" + location.toString() );
 
 
             }
@@ -94,7 +94,7 @@ public class GetUsersByFilterFromDB {
             @Override
             public void onGeoQueryReady() {
                 
-                Log.e(TAG, "onGeoQueryReady");
+          //      Log.e(TAG, "onGeoQueryReady");
                 geoQuery.removeAllListeners();
                 
                 
@@ -163,7 +163,7 @@ public class GetUsersByFilterFromDB {
 
             @Override
             public void onGeoQueryError(DatabaseError error) {
-                Log.e(TAG, "onGeoQueryError: " + error.toString());
+          //      Log.e(TAG, "onGeoQueryError: " + error.toString());
 
             }
         });
