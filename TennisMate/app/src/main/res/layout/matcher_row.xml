@@ -13,14 +13,16 @@
         android:layout_height="90dp"
         android:elevation="5dp"
         app:cardCornerRadius="15dp"
-        android:background="@color/white">
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@color/coolBlue">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
-            android:background="@color/white">
+            android:background="@color/coolBlue">
 
 
             <de.hdodenhof.circleimageview.CircleImageView

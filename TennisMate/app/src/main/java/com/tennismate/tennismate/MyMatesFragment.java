@@ -66,6 +66,7 @@ public class MyMatesFragment extends Fragment implements DialogsListAdapter.OnDi
         // Entering specific chat
 
         dialog.setUnreadCount(0);
+        dialogsAdapter.notifyDataSetChanged();
         String chatId = dialog.getId();
         Intent intent = new Intent(getActivity(), ChatActivity.class);
         intent.putExtra("chatId", chatId);

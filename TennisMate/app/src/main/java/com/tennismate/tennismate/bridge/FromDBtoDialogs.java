@@ -168,7 +168,15 @@ public class FromDBtoDialogs extends BaseDB {
 
 
                                 if( mDialogDialogsListAdapter != null){
-                                    mDialogDialogsListAdapter.updateDialogWithMessage(chatId, lastMessage);
+                                    mDialogDialogsListAdapter.updateItemById(new Dialog(
+                                            chatId,
+                                            baseUser.firstName + " " + baseUser.lastName,
+                                            baseUser.photoUrl,
+                                            users,
+                                            lastMessage,
+                                            (int) unreadMessagesCount));
+
+//                                    mDialogDialogsListAdapter.updateDialogWithMessage(chatId, lastMessage);
 
                                 }
                             }

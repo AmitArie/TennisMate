@@ -6,6 +6,7 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -123,7 +124,14 @@ public class GetUsersByFilterFromDB {
                                     if ( locationData == null)
                                         return;
 
+
                                     BaseUser baseUser = BasicUserFromDataSnapShot.create(userData);
+
+
+                                    if( baseUser.uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                        return;
+                                    }
+
                                     UserLocation userLocation = UserLocationFromDataSnapShot.create(locationData);
 
                                     UserContext userContext = new UserContext(baseUser, userLocation, mAdapter);

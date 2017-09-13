@@ -55,7 +55,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
         holder.mUserPict.setImageBitmap(userContext.getUserPhoto());
-        holder.mUserName.setText(userName);
+        holder.mUserName.setText(userName + ", Level: " + user.level);
         holder.muserLocation.setText(userLocationS);
 
 

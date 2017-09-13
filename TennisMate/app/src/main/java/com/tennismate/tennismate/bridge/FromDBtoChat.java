@@ -1,6 +1,8 @@
 package com.tennismate.tennismate.bridge;
 
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,7 +16,6 @@ public class FromDBtoChat extends BaseDB {
     private static final String TAG = "FromDBtoChat";
 
     private MessagesListAdapter<ChatMessage> mMessageMessagesListAdapter;
-//    private DialogsListAdapter<Dialog> mDialogsAdapter;
     private final String mActiveUserUid;
     private final String mChatId;
 
@@ -24,7 +25,6 @@ public class FromDBtoChat extends BaseDB {
         super();
         this.mChatId = chatId;
         this.mMessageMessagesListAdapter = messageMessagesListAdapter;
-//        this.mDialogsAdapter = dialogsAdapter;
         this.mActiveUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
@@ -83,18 +83,6 @@ public class FromDBtoChat extends BaseDB {
                 ChatMessage chatMessage = MessagesConverter
                         .fromDbMessageRefTOChatMessage(lastMessage);
                 mMessageMessagesListAdapter.addToStart(chatMessage, true);
-
-                /*
-                    setting the unseen messages of the current user in the
-                    current chat to zero:
-
-                 */
-
-
-//                if( mDialogsAdapter != null){
-//                    mChatUnseenMessages.child(chatId).child(mActiveUserUid).setValue(0);
-//                }
-
 
             }
 

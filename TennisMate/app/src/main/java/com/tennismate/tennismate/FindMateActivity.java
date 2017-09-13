@@ -50,6 +50,7 @@ public class FindMateActivity extends AppCompatActivity implements SearchView.On
 
         mToolbar = (Toolbar) findViewById(R.id.find_mate_toolbar);
         setSupportActionBar(mToolbar);
+        mToolbar.setTitle("People around you .. ");
 
         recyclerView = (RecyclerView) findViewById(R.id.find_mate_recyclerview);
         layoutManager = new LinearLayoutManager(this);

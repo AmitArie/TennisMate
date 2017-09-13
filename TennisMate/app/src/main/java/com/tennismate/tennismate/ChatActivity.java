@@ -47,6 +47,7 @@ public class ChatActivity extends AppCompatActivity
 
 
     private DatabaseReference mUsersRef;
+    private DatabaseReference mUnseenMessagesRef;
     private String mActiveUserId;
     protected final String senderId = "0";
     protected ImageLoader imageLoader;
@@ -65,12 +66,18 @@ public class ChatActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RunTimeSharedData.isChatActivityAtive = true;
+        chatIdSetup();
 
         mUsersRef = FirebaseDatabase.getInstance().getReference("users");
         mActiveUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        chatIdSetup();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mUnseenMessagesRef = database.getReference("chat")
+                .child("unseenMessages")
+                .child(chatId)
+                .child(mActiveUserId);
+
+
 
 
         imageLoader = new ImageLoader() {
@@ -117,34 +124,33 @@ public class ChatActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        RunTimeSharedData.isChatActivityAtive = true;
+        mUnseenMessagesRef.setValue(0);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        RunTimeSharedData.isChatActivityAtive = true;
+        mUnseenMessagesRef.setValue(0);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        RunTimeSharedData.isChatActivityAtive = true;
-        Log.d(TAG, "Chat Activity Restart");
+        mUnseenMessagesRef.setValue(0);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        RunTimeSharedData.isChatActivityAtive = false;
-        Log.d(TAG, "Chat Activity Stopped");
+        mUnseenMessagesRef.setValue(0);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        RunTimeSharedData.isChatActivityAtive = false;
+        mUnseenMessagesRef.setValue(0);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
