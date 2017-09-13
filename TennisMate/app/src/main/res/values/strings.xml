@@ -12,7 +12,7 @@
     <string name="fb_login_protocol_scheme">fb467201103675952</string>
     <string name="app_name">TennisMate</string>
     <string name="activity_entry_header">Welcome</string>
-    <string name="activity_entry_description">TennisMate is an app that you can find tennis partners around you.</string>
+    <string name="activity_entry_description">Find your next tennis mate around you.</string>
 
 
     <!-- Home Activity -->
@@ -20,6 +20,8 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="home_frag_button_label">Press the button to find a tennis mate.</string>
+    <string name="home_frag_welcome">Welcome!</string>
 
     <!-- Profile Fragment -->
     <string name="activity_profile_description">Here you can edit your details</string>

@@ -11,7 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +30,7 @@ import com.tennismate.tennismate.user.UserLocation;
 public class HomeFragment extends Fragment  {
 
 
-    private Button              mSearchMatesButton;
+    private ImageView           mSearchMatesButton;
     private SeekBar             mRadiusSeekBar;
     private TextView            mRadiusSeekBarText;
     private String              mActiveUserUid;
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment  {
 
     private void searchMatesSetup(View v){
 
-        mSearchMatesButton = (Button) v.findViewById(R.id.search_mates_button);
+        mSearchMatesButton = (ImageView) v.findViewById(R.id.search_mates_button);
         mSearchMatesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

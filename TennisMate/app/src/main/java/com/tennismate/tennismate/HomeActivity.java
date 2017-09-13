@@ -47,11 +47,11 @@ public class HomeActivity extends AppCompatActivity {
                         fragmentTransaction.commit();
                         break;
 
-                    case R.id.tab_ranking:
-                        RankingFragment rankingFragment = new RankingFragment();
-                        fragmentTransaction.replace(R.id.fragment_container, rankingFragment);
-                        fragmentTransaction.commit();
-                        break;
+//                    case R.id.tab_ranking:
+//                        RankingFragment rankingFragment = new RankingFragment();
+//                        fragmentTransaction.replace(R.id.fragment_container, rankingFragment);
+//                        fragmentTransaction.commit();
+//                        break;
 
                     case R.id.tab_profile:
                         ProfileFragment profileFragment = new ProfileFragment();
@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
             public void onTabReSelected(@IdRes int tabId) {
-                Toast.makeText(getApplicationContext(), Integer.toString(tabId), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), Integer.toString(tabId), Toast.LENGTH_LONG).show();
             }
         });
 

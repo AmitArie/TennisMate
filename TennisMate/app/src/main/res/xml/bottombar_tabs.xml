@@ -1,19 +1,14 @@
 <tabs>
     <tab
         id="@+id/tab_find_mates"
-        icon="@drawable/ic_action_search_mates"
-        title="Favorites" />
+        icon="@drawable/ic_tennismate_ic1"
+        title="Find Mates" />
     <tab
         id="@+id/tab_mates"
         icon="@drawable/ic_action_mates_chat"
         title="My Mates" />
     <tab
-        id="@+id/tab_ranking"
-        icon="@drawable/ic_action_ranking"
-        title="Rankings" />
-
-    <tab
         id="@+id/tab_profile"
         icon="@drawable/ic_action_profile"
-        title="Profile" />
+        title="My Profile" />
 </tabs>
