@@ -96,6 +96,7 @@ public class FromDBtoDialogs extends BaseDB {
                                             lastMessage,
                                             (int) unreadMessagesCount
                                     ));
+                                    mDialogDialogsListAdapter.notifyDataSetChanged();
                                 }
                             }
 
