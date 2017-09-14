@@ -146,6 +146,15 @@
     </RelativeLayout>
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logout_black"
+        android:id="@+id/logout_button_tennismate"
+        android:layout_gravity="bottom|right"
+        android:clickable="true"/>
+
+
 </LinearLayout>
 
 

@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,9 +52,7 @@ public class HomeFragment extends Fragment  {
 
 
         searchMatesSetup(v);
-        //profileSetup(v);
-        //logoutSetup(v);
-        //chatButtonSetup(v);
+
 
         return v;
     }
@@ -180,20 +180,7 @@ public class HomeFragment extends Fragment  {
 //        });
 //    }
 //
-//    private void logoutSetup(View v){
-//
-//        mLogout = (Button) v.findViewById(R.id.logout);
-//        mLogout.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                LoginManager.getInstance().logOut();
-//                mAuth =  FirebaseAuth.getInstance();
-//                mAuth.signOut();
-//                Intent intent = new Intent(getActivity(), EntryActivity.class);
-//                startActivity(intent);
-//
-//            }
-//        });
-//    }
+
 //
 //    private void chatButtonSetup(View v){
 //        mChatButton = (Button) v.findViewById(R.id.chat_activity_button);

@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -36,6 +37,7 @@ public class ProfileFragment extends Fragment {
 
     // View Elements:
 
+
     private CircleImageView mProfilePictImageView;
     private TextView mFullName;
     private TextView mEmailTextView;
@@ -43,6 +45,9 @@ public class ProfileFragment extends Fragment {
     private int mLevelCounter;
     private ImageView mLevelInfo;
     private Button mSaveButton;
+    private ImageView  mLogout;
+    private FirebaseAuth        mAuth;
+
 
     // DTypes:
     private FromDBtoBaseUser mFromDBtoBaseUser;
@@ -121,6 +126,19 @@ public class ProfileFragment extends Fragment {
                 mFromBaseUserToDb.execute(mBaseUser);
                 mSaveButton.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        mLogout = (ImageView) v.findViewById(R.id.logout_button_tennismate);
+        mLogout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+                mAuth =  FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(getActivity(), EntryActivity.class);
+                startActivity(intent);
+
             }
         });
 
